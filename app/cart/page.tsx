@@ -25,7 +25,7 @@ export default function CartPage() {
     window.location.href = mailtoLink
 
     // Clear cart after order
-    //clearCart()
+    clearCart()
   }
 
   if (cartItems.length === 0) {
