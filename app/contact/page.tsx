@@ -22,8 +22,23 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
+
+    // Create email with contact form data
+    const subject = `Contact Form: ${formData.orderType || "General Inquiry"}`
+    const body = `New message from ${formData.name}:
+
+Email: ${formData.email}
+Phone: ${formData.phone || "Not provided"}
+Interest: ${formData.orderType || "Not specified"}
+
+Message:
+${formData.message}
+
+Please respond to this inquiry!`
+
+    const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoLink
+
     alert("Thank you for your message! I'll get back to you soon!")
     setFormData({ name: "", email: "", phone: "", orderType: "", message: "" })
   }
