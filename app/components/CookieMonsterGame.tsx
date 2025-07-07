@@ -10,9 +10,18 @@ interface Position {
   y: number
 }
 
+interface Ghost {
+  id: number
+  x: number
+  y: number
+  direction: string
+  color: string
+}
+
 interface GameState {
   cookieMonster: Position
   cookies: Position[]
+  ghosts: Ghost[]
   score: number
   gameOver: boolean
   lost: boolean
@@ -23,25 +32,143 @@ interface GameState {
 const GRID_SIZE = 20
 const GAME_WIDTH = 400
 const GAME_HEIGHT = 300
+const COLS = GAME_WIDTH / GRID_SIZE // 20 columns
+const ROWS = GAME_HEIGHT / GRID_SIZE // 15 rows
+
+// Pac-Man style maze layout (1 = wall, 0 = path)
+const MAZE = [
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+  [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+  [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+]
+
+// Generate cookies only on valid paths
+const generateCookies = (): Position[] => {
+  const cookies: Position[] = []
+  for (let y = 1; y < ROWS - 1; y++) {
+    for (let x = 1; x < COLS - 1; x++) {
+      if (MAZE[y][x] === 0 && Math.random() > 0.65) {
+        cookies.push({ x, y })
+      }
+    }
+  }
+  while (cookies.length < 15) {
+    const x = Math.floor(Math.random() * (COLS - 2)) + 1
+    const y = Math.floor(Math.random() * (ROWS - 2)) + 1
+    if (MAZE[y][x] === 0 && !cookies.some((c) => c.x === x && c.y === y)) {
+      cookies.push({ x, y })
+    }
+  }
+  return cookies.slice(0, 18)
+}
+
+// Generate chef hat ghosts
+const generateGhosts = (): Ghost[] => {
+  return [
+    { id: 1, x: 9, y: 7, direction: "left", color: "red" },
+    { id: 2, x: 10, y: 7, direction: "right", color: "pink" },
+    { id: 3, x: 9, y: 8, direction: "up", color: "cyan" },
+  ]
+}
+
+// Check if position is valid
+const isValidPosition = (x: number, y: number): boolean => {
+  if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return false
+  return MAZE[y][x] === 0
+}
+
+// Move ghosts AI
+const moveGhost = (ghost: Ghost): Ghost => {
+  const directions = ["up", "down", "left", "right"]
+  let newX = ghost.x
+  let newY = ghost.y
+  let newDirection = ghost.direction
+
+  // Try to continue in current direction
+  switch (ghost.direction) {
+    case "up":
+      newY = ghost.y - 1
+      break
+    case "down":
+      newY = ghost.y + 1
+      break
+    case "left":
+      newX = ghost.x - 1
+      break
+    case "right":
+      newX = ghost.x + 1
+      break
+  }
+
+  // If can't continue, pick a random valid direction
+  if (!isValidPosition(newX, newY)) {
+    const validDirections = directions.filter((dir) => {
+      let testX = ghost.x
+      let testY = ghost.y
+      switch (dir) {
+        case "up":
+          testY = ghost.y - 1
+          break
+        case "down":
+          testY = ghost.y + 1
+          break
+        case "left":
+          testX = ghost.x - 1
+          break
+        case "right":
+          testX = ghost.x + 1
+          break
+      }
+      return isValidPosition(testX, testY)
+    })
+
+    if (validDirections.length > 0) {
+      newDirection = validDirections[Math.floor(Math.random() * validDirections.length)]
+      switch (newDirection) {
+        case "up":
+          newY = ghost.y - 1
+          break
+        case "down":
+          newY = ghost.y + 1
+          break
+        case "left":
+          newX = ghost.x - 1
+          break
+        case "right":
+          newX = ghost.x + 1
+          break
+      }
+    } else {
+      newX = ghost.x
+      newY = ghost.y
+    }
+  }
+
+  return { ...ghost, x: newX, y: newY, direction: newDirection }
+}
 
 export default function CookieMonsterGame({ onClose }: { onClose: () => void }) {
   const [gameState, setGameState] = useState<GameState>({
-    cookieMonster: { x: 10, y: 10 },
-    cookies: [
-      { x: 5, y: 5 },
-      { x: 15, y: 5 },
-      { x: 5, y: 15 },
-      { x: 15, y: 15 },
-      { x: 10, y: 5 },
-      { x: 10, y: 15 },
-      { x: 5, y: 10 },
-      { x: 15, y: 10 },
-    ],
+    cookieMonster: { x: 1, y: 1 },
+    cookies: generateCookies(),
+    ghosts: generateGhosts(),
     score: 0,
     gameOver: false,
     lost: false,
     direction: "right",
-    timeLeft: 45,
+    timeLeft: 90,
   })
 
   const moveCookieMonster = useCallback((direction: string) => {
@@ -53,24 +180,33 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
       switch (direction) {
         case "up":
-          newY = Math.max(0, newY - 1)
+          newY = newY - 1
           break
         case "down":
-          newY = Math.min(GAME_HEIGHT / GRID_SIZE - 1, newY + 1)
+          newY = newY + 1
           break
         case "left":
-          newX = Math.max(0, newX - 1)
+          newX = newX - 1
           break
         case "right":
-          newX = Math.min(GAME_WIDTH / GRID_SIZE - 1, newX + 1)
+          newX = newX + 1
           break
+      }
+
+      if (!isValidPosition(newX, newY)) {
+        return prev
       }
 
       const newCookieMonster = { x: newX, y: newY }
 
+      // Check for ghost collision
+      const hitGhost = prev.ghosts.some((ghost) => ghost.x === newX && ghost.y === newY)
+      if (hitGhost) {
+        return { ...prev, lost: true, gameOver: true }
+      }
+
       // Check for cookie collision
       const remainingCookies = prev.cookies.filter((cookie) => !(cookie.x === newX && cookie.y === newY))
-
       const cookieEaten = remainingCookies.length < prev.cookies.length
       const newScore = cookieEaten ? prev.score + 10 : prev.score
       const gameOver = remainingCookies.length === 0
@@ -123,6 +259,30 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
     return () => window.removeEventListener("keydown", handleKeyPress)
   }, [moveCookieMonster, onClose])
 
+  // Ghost movement timer
+  useEffect(() => {
+    if (gameState.gameOver) return
+
+    const ghostTimer = setInterval(() => {
+      setGameState((prev) => {
+        if (prev.gameOver) return prev
+
+        const newGhosts = prev.ghosts.map(moveGhost)
+
+        // Check if any ghost caught Cookie Monster
+        const hitGhost = newGhosts.some((ghost) => ghost.x === prev.cookieMonster.x && ghost.y === prev.cookieMonster.y)
+
+        if (hitGhost) {
+          return { ...prev, ghosts: newGhosts, lost: true, gameOver: true }
+        }
+
+        return { ...prev, ghosts: newGhosts }
+      })
+    }, 500) // Ghosts move every 500ms
+
+    return () => clearInterval(ghostTimer)
+  }, [gameState.gameOver])
+
   // Timer countdown effect
   useEffect(() => {
     if (gameState.gameOver || gameState.lost || gameState.timeLeft <= 0) return
@@ -145,7 +305,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
     if (gameState.lost) {
       const timeout = setTimeout(() => {
         onClose()
-      }, 3000) // Close after 3 seconds when lost
+      }, 3000)
 
       return () => clearTimeout(timeout)
     }
@@ -153,52 +313,47 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
   const resetGame = () => {
     setGameState({
-      cookieMonster: { x: 10, y: 10 },
-      cookies: [
-        { x: 5, y: 5 },
-        { x: 15, y: 5 },
-        { x: 5, y: 15 },
-        { x: 15, y: 15 },
-        { x: 10, y: 5 },
-        { x: 10, y: 15 },
-        { x: 5, y: 10 },
-        { x: 15, y: 10 },
-      ],
+      cookieMonster: { x: 1, y: 1 },
+      cookies: generateCookies(),
+      ghosts: generateGhosts(),
       score: 0,
       gameOver: false,
       lost: false,
       direction: "right",
-      timeLeft: 45,
+      timeLeft: 90,
     })
   }
 
   return (
-    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md bg-black border-4 border-blue-400">
+    <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-md bg-black border-4 border-yellow-400">
         <CardHeader className="text-center bg-black">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl text-blue-400 font-mono">🍪 COOKIE MONSTER GAME 🍪</CardTitle>
-            <Button variant="ghost" size="sm" onClick={onClose} className="text-blue-400 hover:bg-blue-400/20">
+            <CardTitle className="text-2xl text-yellow-400 font-mono">🍪 COOKIE MONSTER PAC-MAN 🍪</CardTitle>
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-yellow-400 hover:bg-yellow-400/20">
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-sm text-cyan-400 font-mono">"ME WANT COOKIE! NOM NOM NOM!"</p>
+          <p className="text-sm text-cyan-400 font-mono">"ME WANT COOKIE! AVOID CHEF HATS!"</p>
         </CardHeader>
         <CardContent className="p-6 bg-black">
           <div className="text-center mb-4">
             <div className="flex justify-between items-center mb-2 font-mono">
               <div className="text-lg font-bold text-yellow-400">
-                COOKIES: {gameState.score / 10}/{gameState.score / 10 + gameState.cookies.length}
+                SCORE: {gameState.score.toString().padStart(4, "0")}
               </div>
               <div
-                className={`text-lg font-bold ${gameState.timeLeft <= 10 ? "text-red-500 animate-pulse" : "text-cyan-400"}`}
+                className={`text-lg font-bold ${gameState.timeLeft <= 20 ? "text-red-500 animate-pulse" : "text-cyan-400"}`}
               >
                 TIME: {gameState.timeLeft.toString().padStart(2, "0")}
               </div>
             </div>
+            <div className="text-sm font-mono text-green-400">
+              COOKIES: {gameState.score / 10}/{gameState.score / 10 + gameState.cookies.length}
+            </div>
             {gameState.lost && (
               <div className="text-lg font-bold text-red-500 mt-2 font-mono animate-pulse">
-                "ME NO GET ALL COOKIES!"
+                {gameState.timeLeft <= 0 ? '"ME RUN OUT OF TIME!"' : '"CHEF HAT GOT ME!"'}
                 <div className="text-sm text-gray-400 mt-1">CLOSING IN 3 SECONDS...</div>
               </div>
             )}
@@ -215,16 +370,65 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
             style={{
               width: GAME_WIDTH,
               height: GAME_HEIGHT,
-              backgroundImage: `
-                radial-gradient(circle at 50% 50%, #001122 0%, #000000 100%),
-                repeating-linear-gradient(0deg, transparent, transparent 19px, #001122 20px),
-                repeating-linear-gradient(90deg, transparent, transparent 19px, #001122 20px)
-              `,
             }}
           >
-            {/* Cookie Monster - Sesame Street style */}
+            {/* Draw Maze Walls */}
+            {MAZE.map((row, y) =>
+              row.map((cell, x) => {
+                if (cell === 1) {
+                  return (
+                    <div
+                      key={`wall-${x}-${y}`}
+                      className="absolute bg-blue-600 border border-blue-400"
+                      style={{
+                        left: x * GRID_SIZE,
+                        top: y * GRID_SIZE,
+                        width: GRID_SIZE,
+                        height: GRID_SIZE,
+                        boxShadow: "inset 1px 1px 2px rgba(100, 149, 237, 0.3)",
+                      }}
+                    />
+                  )
+                }
+                return null
+              }),
+            )}
+
+            {/* Enhanced Cookies */}
+            {gameState.cookies.map((cookie, index) => (
+              <div
+                key={index}
+                className="absolute z-5"
+                style={{
+                  left: cookie.x * GRID_SIZE + 2,
+                  top: cookie.y * GRID_SIZE + 2,
+                  width: 16,
+                  height: 16,
+                }}
+              >
+                <div className="w-full h-full relative animate-pulse">
+                  {/* Cookie base with gradient */}
+                  <div
+                    className="absolute inset-0 rounded-full border-2 border-yellow-500"
+                    style={{
+                      background: "radial-gradient(circle at 30% 30%, #fbbf24, #d97706)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.3), inset 1px 1px 2px rgba(255,255,255,0.3)",
+                    }}
+                  ></div>
+                  {/* Chocolate chips */}
+                  <div className="absolute w-1.5 h-1.5 bg-amber-900 rounded-full top-1 left-2 shadow-sm"></div>
+                  <div className="absolute w-1.5 h-1.5 bg-amber-900 rounded-full top-3 right-1 shadow-sm"></div>
+                  <div className="absolute w-1 h-1 bg-amber-900 rounded-full bottom-1 left-1 shadow-sm"></div>
+                  <div className="absolute w-1 h-1 bg-amber-900 rounded-full top-2 left-3 shadow-sm"></div>
+                  {/* Cookie shine */}
+                  <div className="absolute w-2 h-1 bg-yellow-200 rounded-full top-1 left-2 opacity-60"></div>
+                </div>
+              </div>
+            ))}
+
+            {/* Enhanced Cookie Monster */}
             <div
-              className="absolute transition-all duration-150"
+              className="absolute transition-all duration-150 z-10"
               style={{
                 left: gameState.cookieMonster.x * GRID_SIZE,
                 top: gameState.cookieMonster.y * GRID_SIZE,
@@ -232,69 +436,123 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
                 height: GRID_SIZE,
               }}
             >
-              {/* Cookie Monster Head */}
               <div className="w-full h-full relative">
-                {/* Main blue fuzzy body */}
-                <div className="absolute inset-0 bg-blue-500 rounded-full border border-blue-400"></div>
-
-                {/* Eyes */}
-                <div className="absolute top-1 left-1">
-                  <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
-                    <div className="w-1 h-1 bg-black rounded-full mt-0.5 ml-0.5"></div>
-                  </div>
-                </div>
-                <div className="absolute top-1 right-1">
-                  <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
-                    <div className="w-1 h-1 bg-black rounded-full mt-0.5 ml-0.5"></div>
-                  </div>
-                </div>
-
-                {/* Mouth - changes based on direction */}
+                {/* Main blue fuzzy body with gradient */}
                 <div
-                  className="absolute bg-black rounded-full"
+                  className="absolute inset-0 rounded-full border-2 border-blue-400"
                   style={{
-                    left: "50%",
-                    top: "60%",
-                    transform: "translate(-50%, -50%)",
-                    width: gameState.direction === "left" || gameState.direction === "right" ? "8px" : "6px",
-                    height: gameState.direction === "up" || gameState.direction === "down" ? "8px" : "6px",
+                    background: "radial-gradient(circle at 30% 30%, #3b82f6, #1e40af)",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.4), inset 1px 1px 3px rgba(255,255,255,0.2)",
                   }}
                 ></div>
 
-                {/* Cookie crumbs around mouth when moving */}
-                {gameState.direction && (
-                  <>
-                    <div className="absolute w-0.5 h-0.5 bg-orange-400 rounded-full top-3 left-2 animate-pulse"></div>
-                    <div className="absolute w-0.5 h-0.5 bg-yellow-600 rounded-full top-3 right-2 animate-pulse"></div>
-                  </>
-                )}
+                {/* Googly Eyes */}
+                <div className="absolute top-0.5 left-1">
+                  <div
+                    className="w-3 h-3 bg-white rounded-full border border-gray-300"
+                    style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
+                  >
+                    <div className="w-1.5 h-1.5 bg-black rounded-full mt-1 ml-1"></div>
+                  </div>
+                </div>
+                <div className="absolute top-0.5 right-1">
+                  <div
+                    className="w-3 h-3 bg-white rounded-full border border-gray-300"
+                    style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
+                  >
+                    <div className="w-1.5 h-1.5 bg-black rounded-full mt-1 ml-1"></div>
+                  </div>
+                </div>
+
+                {/* Mouth with teeth */}
+                <div
+                  className="absolute bg-black rounded-full border border-gray-800"
+                  style={{
+                    left: "50%",
+                    top: "65%",
+                    transform: "translate(-50%, -50%)",
+                    width: "10px",
+                    height: "8px",
+                    boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  {/* Teeth */}
+                  <div className="absolute w-1 h-1 bg-white top-0 left-1"></div>
+                  <div className="absolute w-1 h-1 bg-white top-0 right-1"></div>
+                </div>
+
+                {/* Cookie crumbs */}
+                <div className="absolute w-1 h-1 bg-orange-400 rounded-full top-4 left-1 animate-pulse shadow-sm"></div>
+                <div className="absolute w-0.5 h-0.5 bg-yellow-600 rounded-full top-3 right-1 animate-pulse"></div>
+                <div className="absolute w-0.5 h-0.5 bg-amber-600 rounded-full bottom-1 left-2 animate-pulse"></div>
               </div>
             </div>
 
-            {/* Cookies - Realistic pixelated cookies */}
-            {gameState.cookies.map((cookie, index) => (
+            {/* Chef Hat Ghosts */}
+            {gameState.ghosts.map((ghost) => (
               <div
-                key={index}
-                className="absolute"
+                key={ghost.id}
+                className="absolute transition-all duration-300 z-10"
                 style={{
-                  left: cookie.x * GRID_SIZE + 4,
-                  top: cookie.y * GRID_SIZE + 4,
-                  width: 12,
-                  height: 12,
+                  left: ghost.x * GRID_SIZE,
+                  top: ghost.y * GRID_SIZE,
+                  width: GRID_SIZE,
+                  height: GRID_SIZE,
                 }}
               >
-                {/* Pixelated chocolate chip cookie */}
                 <div className="w-full h-full relative">
-                  {/* Cookie base - golden brown */}
-                  <div className="absolute inset-0 bg-yellow-600 rounded-full border border-yellow-500"></div>
+                  {/* Chef Hat Base */}
+                  <div
+                    className={`absolute inset-0 rounded-t-full border-2 ${
+                      ghost.color === "red"
+                        ? "bg-red-500 border-red-400"
+                        : ghost.color === "pink"
+                          ? "bg-pink-500 border-pink-400"
+                          : "bg-cyan-500 border-cyan-400"
+                    }`}
+                    style={{
+                      background:
+                        ghost.color === "red"
+                          ? "radial-gradient(circle at 30% 30%, #ef4444, #dc2626)"
+                          : ghost.color === "pink"
+                            ? "radial-gradient(circle at 30% 30%, #ec4899, #db2777)"
+                            : "radial-gradient(circle at 30% 30%, #06b6d4, #0891b2)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                    }}
+                  ></div>
 
-                  {/* Chocolate chips */}
-                  <div className="absolute w-1 h-1 bg-amber-800 rounded-full top-1 left-1"></div>
-                  <div className="absolute w-1 h-1 bg-amber-800 rounded-full top-2 right-1"></div>
-                  <div className="absolute w-1 h-1 bg-amber-800 rounded-full bottom-1 left-2"></div>
+                  {/* Chef Hat Top (puffy part) */}
+                  <div
+                    className="absolute -top-1 left-1 w-4 h-3 bg-white rounded-full border border-gray-200"
+                    style={{
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.5)",
+                    }}
+                  ></div>
 
-                  {/* Cookie shine/highlight */}
-                  <div className="absolute w-1 h-1 bg-yellow-300 rounded-full top-0.5 left-1.5 opacity-70"></div>
+                  {/* Chef Hat Band */}
+                  <div className="absolute bottom-2 left-0 w-full h-1 bg-white border-t border-gray-200"></div>
+
+                  {/* Ghost Eyes */}
+                  <div className="absolute top-2 left-1">
+                    <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
+                      <div className="w-1 h-1 bg-red-600 rounded-full mt-0.5 ml-0.5"></div>
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-1">
+                    <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
+                      <div className="w-1 h-1 bg-red-600 rounded-full mt-0.5 ml-0.5"></div>
+                    </div>
+                  </div>
+
+                  {/* Ghost bottom wavy part */}
+                  <div
+                    className={`absolute bottom-0 left-0 w-full h-2 ${
+                      ghost.color === "red" ? "bg-red-500" : ghost.color === "pink" ? "bg-pink-500" : "bg-cyan-500"
+                    }`}
+                    style={{
+                      clipPath: "polygon(0 0, 25% 100%, 50% 0, 75% 100%, 100% 0, 100% 50%, 0 50%)",
+                    }}
+                  ></div>
                 </div>
               </div>
             ))}
@@ -303,12 +561,12 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
           {/* Controls */}
           <div className="text-center space-y-4">
             <div className="text-sm text-cyan-400 font-mono">
-              <p>HELP COOKIE MONSTER EAT ALL THE COOKIES!</p>
-              <p>USE ARROW KEYS OR WASD TO MOVE!</p>
+              <p>AVOID THE CHEF HAT GHOSTS!</p>
+              <p>EAT ALL COOKIES TO WIN!</p>
               <p className="font-bold text-yellow-400">⚡ "ME WANT COOKIE NOW!" ⚡</p>
             </div>
 
-            {/* Mobile Controls - Cookie Monster themed */}
+            {/* Mobile Controls */}
             <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto">
               <div></div>
               <Button
