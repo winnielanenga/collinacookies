@@ -2,12 +2,16 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cookie, Plus, Minus, Trash2, ShoppingBag } from "lucide-react"
+import { Cookie, Plus, Minus, Trash2, ShoppingBag, Mail, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { useCart } from "../hooks/useCart"
+import { useState } from "react"
+import CookieMonsterGame from "../components/CookieMonsterGame"
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart()
+  const [emailSent, setEmailSent] = useState(false)
+  const [showGame, setShowGame] = useState(false)
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return
@@ -24,11 +28,18 @@ export default function CartPage() {
     const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=Cookie Order&body=${encodeURIComponent(message)}`
     window.location.href = mailtoLink
 
-    // Clear cart after order
-    clearCart()
+    // Show the "email sent" confirmation instead of clearing cart immediately
+    setEmailSent(true)
   }
 
-  if (cartItems.length === 0) {
+  const handleEmailConfirmed = () => {
+    // Clear cart and show the easter egg game after they confirm they sent the email
+    clearCart()
+    setEmailSent(false)
+    setShowGame(true)
+  }
+
+  if (cartItems.length === 0 && !emailSent) {
     return (
       <div className="min-h-screen bg-cream">
         {/* Header */}
@@ -99,113 +110,155 @@ export default function CartPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center">Your Cookie Cart</h2>
+      {/* Order Sent Confirmation */}
+      {emailSent && (
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Card className="border-2 border-green-300 bg-green-50">
+              <CardContent className="p-8 text-center">
+                <Mail className="h-16 w-16 text-green-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Order Email Ready to Send!</h3>
+                <p className="text-lg text-gray-700 mb-6">
+                  I've opened your email client with your cookie order ready to go. Please send that email, then come
+                  back here for a special surprise!
+                </p>
+                <div className="bg-white rounded-lg p-4 border border-green-200 mb-6">
+                  <p className="text-sm text-gray-600 mb-2">
+                    <strong>Next steps:</strong>
+                  </p>
+                  <ol className="text-sm text-gray-600 text-left max-w-md mx-auto">
+                    <li>1. Check your email client (it should have opened)</li>
+                    <li>2. Review your cookie order details</li>
+                    <li>3. Click "Send" in your email</li>
+                    <li>4. Come back here and click the button below!</li>
+                  </ol>
+                </div>
+                <Button onClick={handleEmailConfirmed} className="bg-green-600 hover:bg-green-700 text-white" size="lg">
+                  <CheckCircle className="mr-2 h-5 w-5" />I Sent My Order!
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-4">
-              {cartItems.map((item) => (
-                <Card key={item.id} className="border-2 border-peach/20 bg-white">
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-peach/10 rounded-full flex items-center justify-center">
-                          <Cookie className="h-6 w-6 text-peach" />
+      {/* Cart Items */}
+      {!emailSent && (
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center">Your Cookie Cart</h2>
+
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Cart Items */}
+              <div className="lg:col-span-2 space-y-4">
+                {cartItems.map((item) => (
+                  <Card key={item.id} className="border-2 border-peach/20 bg-white">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-peach/10 rounded-full flex items-center justify-center">
+                            <Cookie className="h-6 w-6 text-peach" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-gray-800">{item.name}</h3>
+                            <p className="text-peach font-bold">${item.price.toFixed(2)} per dozen</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                          <p className="text-peach font-bold">${item.price.toFixed(2)} per dozen</p>
+
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                            <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
+
+                          <div className="text-right">
+                            <p className="font-bold text-gray-800">${(item.price * item.quantity).toFixed(2)}</p>
+                          </div>
+
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            disabled={item.quantity <= 1}
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <span className="w-8 text-center font-semibold">{item.quantity}</span>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
+              {/* Order Summary */}
+              <div className="lg:col-span-1">
+                <Card className="border-2 border-pink/20 bg-white sticky top-24">
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-gray-800">Order Summary</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      {cartItems.map((item) => (
+                        <div key={item.id} className="flex justify-between text-sm">
+                          <span>
+                            {item.quantity} dozen {item.name}
+                          </span>
+                          <span>${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
+                      ))}
+                    </div>
 
-                        <div className="text-right">
-                          <p className="font-bold text-gray-800">${(item.price * item.quantity).toFixed(2)}</p>
-                        </div>
+                    <hr className="border-gray-200" />
 
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeFromCart(item.id)}
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-4 w-4" />
+                    <div className="flex justify-between text-lg font-bold">
+                      <span>Total:</span>
+                      <span className="text-peach">${getCartTotal().toFixed(2)}</span>
+                    </div>
+
+                    <div className="space-y-3 pt-4">
+                      <Button
+                        onClick={handleCheckout}
+                        className="w-full bg-peach hover:bg-peach/90 text-white"
+                        size="lg"
+                      >
+                        <ShoppingBag className="mr-2 h-5 w-5" />
+                        Place Order
+                      </Button>
+
+                      <p className="text-xs text-gray-500 text-center">
+                        Clicking "Place Order" will open your email to send me your order details!
+                      </p>
+
+                      <Link href="/">
+                        <Button variant="outline" className="w-full bg-transparent">
+                          Continue Shopping
                         </Button>
-                      </div>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <Card className="border-2 border-pink/20 bg-white sticky top-24">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-gray-800">Order Summary</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    {cartItems.map((item) => (
-                      <div key={item.id} className="flex justify-between text-sm">
-                        <span>
-                          {item.quantity} dozen {item.name}
-                        </span>
-                        <span>${(item.price * item.quantity).toFixed(2)}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <hr className="border-gray-200" />
-
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Total:</span>
-                    <span className="text-peach">${getCartTotal().toFixed(2)}</span>
-                  </div>
-
-                  <div className="space-y-3 pt-4">
-                    <Button onClick={handleCheckout} className="w-full bg-peach hover:bg-peach/90 text-white" size="lg">
-                      <ShoppingBag className="mr-2 h-5 w-5" />
-                      Place Order
-                    </Button>
-
-                    <p className="text-xs text-gray-500 text-center">
-                      Clicking "Place Order" will open your email to send me your order details!
-                    </p>
-
-                    <Link href="/">
-                      <Button variant="outline" className="w-full bg-transparent">
-                        Continue Shopping
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Easter Egg Game */}
+      {showGame && <CookieMonsterGame onClose={() => setShowGame(false)} />}
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8 px-4 mt-16">

@@ -29,9 +29,9 @@ interface GameState {
   timeLeft: number
 }
 
-const GRID_SIZE = 20
-const GAME_WIDTH = 400
-const GAME_HEIGHT = 300
+const GRID_SIZE = 18 // Reduced by 10%
+const GAME_WIDTH = 360 // Reduced by 10%
+const GAME_HEIGHT = 270 // Reduced by 10%
 const COLS = GAME_WIDTH / GRID_SIZE // 20 columns
 const ROWS = GAME_HEIGHT / GRID_SIZE // 15 rows
 
@@ -89,14 +89,14 @@ const isValidPosition = (x: number, y: number): boolean => {
   return MAZE[y][x] === 0
 }
 
-// Move ghosts AI
+// Improved ghost AI that follows maze paths
 const moveGhost = (ghost: Ghost): Ghost => {
   const directions = ["up", "down", "left", "right"]
   let newX = ghost.x
   let newY = ghost.y
   let newDirection = ghost.direction
 
-  // Try to continue in current direction
+  // Try to continue in current direction first
   switch (ghost.direction) {
     case "up":
       newY = ghost.y - 1
@@ -112,7 +112,7 @@ const moveGhost = (ghost: Ghost): Ghost => {
       break
   }
 
-  // If can't continue, pick a random valid direction
+  // If can't continue in current direction, find valid alternatives
   if (!isValidPosition(newX, newY)) {
     const validDirections = directions.filter((dir) => {
       let testX = ghost.x
@@ -131,10 +131,31 @@ const moveGhost = (ghost: Ghost): Ghost => {
           testX = ghost.x + 1
           break
       }
-      return isValidPosition(testX, testY)
+      return isValidPosition(testX, testY) && dir !== getOppositeDirection(ghost.direction)
     })
 
-    if (validDirections.length > 0) {
+    // If no valid directions except backwards, allow backwards
+    if (validDirections.length === 0) {
+      const oppositeDir = getOppositeDirection(ghost.direction)
+      if (oppositeDir) {
+        newDirection = oppositeDir
+        switch (newDirection) {
+          case "up":
+            newY = ghost.y - 1
+            break
+          case "down":
+            newY = ghost.y + 1
+            break
+          case "left":
+            newX = ghost.x - 1
+            break
+          case "right":
+            newX = ghost.x + 1
+            break
+        }
+      }
+    } else {
+      // Pick a random valid direction
       newDirection = validDirections[Math.floor(Math.random() * validDirections.length)]
       switch (newDirection) {
         case "up":
@@ -150,13 +171,30 @@ const moveGhost = (ghost: Ghost): Ghost => {
           newX = ghost.x + 1
           break
       }
-    } else {
-      newX = ghost.x
-      newY = ghost.y
     }
   }
 
+  // Final validation - if still invalid, don't move
+  if (!isValidPosition(newX, newY)) {
+    return ghost
+  }
+
   return { ...ghost, x: newX, y: newY, direction: newDirection }
+}
+
+const getOppositeDirection = (direction: string): string => {
+  switch (direction) {
+    case "up":
+      return "down"
+    case "down":
+      return "up"
+    case "left":
+      return "right"
+    case "right":
+      return "left"
+    default:
+      return "right"
+  }
 }
 
 export default function CookieMonsterGame({ onClose }: { onClose: () => void }) {
@@ -278,7 +316,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
         return { ...prev, ghosts: newGhosts }
       })
-    }, 500) // Ghosts move every 500ms
+    }, 600) // Slightly slower ghost movement
 
     return () => clearInterval(ghostTimer)
   }, [gameState.gameOver])
@@ -326,39 +364,35 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
   return (
     <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md bg-black border-4 border-yellow-400">
-        <CardHeader className="text-center bg-black">
+      <Card className="w-full max-w-lg bg-black border-4 border-yellow-400">
+        <CardHeader className="text-center bg-black pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl text-yellow-400 font-mono">🍪 COOKIE MONSTER PAC-MAN 🍪</CardTitle>
+            <CardTitle className="text-xl text-yellow-400 font-mono">🍪 COOKIE MONSTER PAC-MAN 🍪</CardTitle>
             <Button variant="ghost" size="sm" onClick={onClose} className="text-yellow-400 hover:bg-yellow-400/20">
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-sm text-cyan-400 font-mono">"ME WANT COOKIE! AVOID CHEF HATS!"</p>
+          <p className="text-xs text-cyan-400 font-mono">"ME WANT COOKIE! AVOID CHEF HATS!"</p>
         </CardHeader>
-        <CardContent className="p-6 bg-black">
-          <div className="text-center mb-4">
-            <div className="flex justify-between items-center mb-2 font-mono">
-              <div className="text-lg font-bold text-yellow-400">
-                SCORE: {gameState.score.toString().padStart(4, "0")}
-              </div>
-              <div
-                className={`text-lg font-bold ${gameState.timeLeft <= 20 ? "text-red-500 animate-pulse" : "text-cyan-400"}`}
-              >
+        <CardContent className="p-4 bg-black">
+          <div className="text-center mb-3">
+            <div className="flex justify-between items-center mb-1 font-mono text-sm">
+              <div className="text-yellow-400">SCORE: {gameState.score.toString().padStart(4, "0")}</div>
+              <div className={`${gameState.timeLeft <= 20 ? "text-red-500 animate-pulse" : "text-cyan-400"}`}>
                 TIME: {gameState.timeLeft.toString().padStart(2, "0")}
               </div>
             </div>
-            <div className="text-sm font-mono text-green-400">
+            <div className="text-xs font-mono text-green-400">
               COOKIES: {gameState.score / 10}/{gameState.score / 10 + gameState.cookies.length}
             </div>
             {gameState.lost && (
-              <div className="text-lg font-bold text-red-500 mt-2 font-mono animate-pulse">
+              <div className="text-sm font-bold text-red-500 mt-1 font-mono animate-pulse">
                 {gameState.timeLeft <= 0 ? '"ME RUN OUT OF TIME!"' : '"CHEF HAT GOT ME!"'}
-                <div className="text-sm text-gray-400 mt-1">CLOSING IN 3 SECONDS...</div>
+                <div className="text-xs text-gray-400 mt-1">CLOSING IN 3 SECONDS...</div>
               </div>
             )}
             {gameState.gameOver && !gameState.lost && (
-              <div className="text-lg font-bold text-green-400 mt-2 font-mono animate-bounce">
+              <div className="text-sm font-bold text-green-400 mt-1 font-mono animate-bounce">
                 "ME EAT ALL COOKIES! NOM NOM!"
               </div>
             )}
@@ -366,7 +400,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
           {/* Game Board */}
           <div
-            className="relative bg-black border-4 border-blue-600 mx-auto mb-4"
+            className="relative bg-black border-4 border-blue-600 mx-auto mb-3"
             style={{
               width: GAME_WIDTH,
               height: GAME_HEIGHT,
@@ -394,187 +428,95 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
               }),
             )}
 
-            {/* Enhanced Cookies */}
+            {/* Pixelated Cookie Emojis */}
             {gameState.cookies.map((cookie, index) => (
               <div
                 key={index}
-                className="absolute z-5"
+                className="absolute z-5 text-sm"
                 style={{
-                  left: cookie.x * GRID_SIZE + 2,
-                  top: cookie.y * GRID_SIZE + 2,
-                  width: 16,
-                  height: 16,
+                  left: cookie.x * GRID_SIZE + 1,
+                  top: cookie.y * GRID_SIZE + 1,
+                  width: GRID_SIZE - 2,
+                  height: GRID_SIZE - 2,
+                  fontSize: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <div className="w-full h-full relative animate-pulse">
-                  {/* Cookie base with gradient */}
-                  <div
-                    className="absolute inset-0 rounded-full border-2 border-yellow-500"
-                    style={{
-                      background: "radial-gradient(circle at 30% 30%, #fbbf24, #d97706)",
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.3), inset 1px 1px 2px rgba(255,255,255,0.3)",
-                    }}
-                  ></div>
-                  {/* Chocolate chips */}
-                  <div className="absolute w-1.5 h-1.5 bg-amber-900 rounded-full top-1 left-2 shadow-sm"></div>
-                  <div className="absolute w-1.5 h-1.5 bg-amber-900 rounded-full top-3 right-1 shadow-sm"></div>
-                  <div className="absolute w-1 h-1 bg-amber-900 rounded-full bottom-1 left-1 shadow-sm"></div>
-                  <div className="absolute w-1 h-1 bg-amber-900 rounded-full top-2 left-3 shadow-sm"></div>
-                  {/* Cookie shine */}
-                  <div className="absolute w-2 h-1 bg-yellow-200 rounded-full top-1 left-2 opacity-60"></div>
-                </div>
+                🍪
               </div>
             ))}
 
-            {/* Enhanced Cookie Monster */}
+            {/* Pixelated Cookie Monster Emoji */}
             <div
-              className="absolute transition-all duration-150 z-10"
+              className="absolute transition-all duration-150 z-10 text-sm"
               style={{
                 left: gameState.cookieMonster.x * GRID_SIZE,
                 top: gameState.cookieMonster.y * GRID_SIZE,
                 width: GRID_SIZE,
                 height: GRID_SIZE,
+                fontSize: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transform: `rotate(${
+                  gameState.direction === "right"
+                    ? "0deg"
+                    : gameState.direction === "left"
+                      ? "180deg"
+                      : gameState.direction === "up"
+                        ? "-90deg"
+                        : "90deg"
+                })`,
               }}
             >
-              <div className="w-full h-full relative">
-                {/* Main blue fuzzy body with gradient */}
-                <div
-                  className="absolute inset-0 rounded-full border-2 border-blue-400"
-                  style={{
-                    background: "radial-gradient(circle at 30% 30%, #3b82f6, #1e40af)",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.4), inset 1px 1px 3px rgba(255,255,255,0.2)",
-                  }}
-                ></div>
-
-                {/* Googly Eyes */}
-                <div className="absolute top-0.5 left-1">
-                  <div
-                    className="w-3 h-3 bg-white rounded-full border border-gray-300"
-                    style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
-                  >
-                    <div className="w-1.5 h-1.5 bg-black rounded-full mt-1 ml-1"></div>
-                  </div>
-                </div>
-                <div className="absolute top-0.5 right-1">
-                  <div
-                    className="w-3 h-3 bg-white rounded-full border border-gray-300"
-                    style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
-                  >
-                    <div className="w-1.5 h-1.5 bg-black rounded-full mt-1 ml-1"></div>
-                  </div>
-                </div>
-
-                {/* Mouth with teeth */}
-                <div
-                  className="absolute bg-black rounded-full border border-gray-800"
-                  style={{
-                    left: "50%",
-                    top: "65%",
-                    transform: "translate(-50%, -50%)",
-                    width: "10px",
-                    height: "8px",
-                    boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
-                  }}
-                >
-                  {/* Teeth */}
-                  <div className="absolute w-1 h-1 bg-white top-0 left-1"></div>
-                  <div className="absolute w-1 h-1 bg-white top-0 right-1"></div>
-                </div>
-
-                {/* Cookie crumbs */}
-                <div className="absolute w-1 h-1 bg-orange-400 rounded-full top-4 left-1 animate-pulse shadow-sm"></div>
-                <div className="absolute w-0.5 h-0.5 bg-yellow-600 rounded-full top-3 right-1 animate-pulse"></div>
-                <div className="absolute w-0.5 h-0.5 bg-amber-600 rounded-full bottom-1 left-2 animate-pulse"></div>
-              </div>
+              👹
             </div>
 
-            {/* Chef Hat Ghosts */}
+            {/* Pixelated Chef Hat Emojis */}
             {gameState.ghosts.map((ghost) => (
               <div
                 key={ghost.id}
-                className="absolute transition-all duration-300 z-10"
+                className="absolute transition-all duration-300 z-10 text-sm"
                 style={{
                   left: ghost.x * GRID_SIZE,
                   top: ghost.y * GRID_SIZE,
                   width: GRID_SIZE,
                   height: GRID_SIZE,
+                  fontSize: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  filter:
+                    ghost.color === "red"
+                      ? "hue-rotate(0deg)"
+                      : ghost.color === "pink"
+                        ? "hue-rotate(300deg)"
+                        : "hue-rotate(180deg)",
                 }}
               >
-                <div className="w-full h-full relative">
-                  {/* Chef Hat Base */}
-                  <div
-                    className={`absolute inset-0 rounded-t-full border-2 ${
-                      ghost.color === "red"
-                        ? "bg-red-500 border-red-400"
-                        : ghost.color === "pink"
-                          ? "bg-pink-500 border-pink-400"
-                          : "bg-cyan-500 border-cyan-400"
-                    }`}
-                    style={{
-                      background:
-                        ghost.color === "red"
-                          ? "radial-gradient(circle at 30% 30%, #ef4444, #dc2626)"
-                          : ghost.color === "pink"
-                            ? "radial-gradient(circle at 30% 30%, #ec4899, #db2777)"
-                            : "radial-gradient(circle at 30% 30%, #06b6d4, #0891b2)",
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                    }}
-                  ></div>
-
-                  {/* Chef Hat Top (puffy part) */}
-                  <div
-                    className="absolute -top-1 left-1 w-4 h-3 bg-white rounded-full border border-gray-200"
-                    style={{
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.5)",
-                    }}
-                  ></div>
-
-                  {/* Chef Hat Band */}
-                  <div className="absolute bottom-2 left-0 w-full h-1 bg-white border-t border-gray-200"></div>
-
-                  {/* Ghost Eyes */}
-                  <div className="absolute top-2 left-1">
-                    <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
-                      <div className="w-1 h-1 bg-red-600 rounded-full mt-0.5 ml-0.5"></div>
-                    </div>
-                  </div>
-                  <div className="absolute top-2 right-1">
-                    <div className="w-2 h-2 bg-white rounded-full border border-gray-300">
-                      <div className="w-1 h-1 bg-red-600 rounded-full mt-0.5 ml-0.5"></div>
-                    </div>
-                  </div>
-
-                  {/* Ghost bottom wavy part */}
-                  <div
-                    className={`absolute bottom-0 left-0 w-full h-2 ${
-                      ghost.color === "red" ? "bg-red-500" : ghost.color === "pink" ? "bg-pink-500" : "bg-cyan-500"
-                    }`}
-                    style={{
-                      clipPath: "polygon(0 0, 25% 100%, 50% 0, 75% 100%, 100% 0, 100% 50%, 0 50%)",
-                    }}
-                  ></div>
-                </div>
+                👨‍🍳
               </div>
             ))}
           </div>
 
           {/* Controls */}
-          <div className="text-center space-y-4">
-            <div className="text-sm text-cyan-400 font-mono">
+          <div className="text-center space-y-3">
+            <div className="text-xs text-cyan-400 font-mono">
               <p>AVOID THE CHEF HAT GHOSTS!</p>
               <p>EAT ALL COOKIES TO WIN!</p>
-              <p className="font-bold text-yellow-400">⚡ "ME WANT COOKIE NOW!" ⚡</p>
             </div>
 
             {/* Mobile Controls */}
-            <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto">
+            <div className="grid grid-cols-3 gap-1 max-w-32 mx-auto">
               <div></div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => moveCookieMonster("up")}
                 disabled={gameState.gameOver}
-                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50 text-xs h-8"
               >
                 ↑
               </Button>
@@ -584,7 +526,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
                 size="sm"
                 onClick={() => moveCookieMonster("left")}
                 disabled={gameState.gameOver}
-                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50 text-xs h-8"
               >
                 ←
               </Button>
@@ -594,7 +536,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
                 size="sm"
                 onClick={() => moveCookieMonster("right")}
                 disabled={gameState.gameOver}
-                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50 text-xs h-8"
               >
                 →
               </Button>
@@ -604,7 +546,7 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
                 size="sm"
                 onClick={() => moveCookieMonster("down")}
                 disabled={gameState.gameOver}
-                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black bg-black font-mono disabled:opacity-50 text-xs h-8"
               >
                 ↓
               </Button>
@@ -613,21 +555,24 @@ export default function CookieMonsterGame({ onClose }: { onClose: () => void }) 
 
             <div className="flex gap-2 justify-center">
               {gameState.gameOver && !gameState.lost && (
-                <Button onClick={resetGame} className="bg-green-600 hover:bg-green-700 text-white font-mono">
-                  "ME WANT MORE COOKIES!"
+                <Button
+                  onClick={resetGame}
+                  className="bg-green-600 hover:bg-green-700 text-white font-mono text-xs h-8"
+                >
+                  "ME WANT MORE!"
                 </Button>
               )}
               {gameState.lost && (
-                <Button onClick={resetGame} className="bg-red-500 hover:bg-red-600 text-white font-mono">
+                <Button onClick={resetGame} className="bg-red-500 hover:bg-red-600 text-white font-mono text-xs h-8">
                   "ME TRY AGAIN!"
                 </Button>
               )}
               <Button
                 variant="outline"
                 onClick={onClose}
-                className="border-gray-400 text-gray-400 bg-black font-mono hover:bg-gray-800"
+                className="border-gray-400 text-gray-400 bg-black font-mono hover:bg-gray-800 text-xs h-8"
               >
-                EXIT GAME
+                EXIT
               </Button>
             </div>
           </div>
