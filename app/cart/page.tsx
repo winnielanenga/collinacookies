@@ -33,13 +33,13 @@ export default function CartPage() {
   }
 
   const handleEmailConfirmed = () => {
-    // Clear cart and show the easter egg game after they confirm they sent the email
-    clearCart()
+    // Show the easter egg game first, then clear cart
     setEmailSent(false)
     setShowGame(true)
+    clearCart()
   }
 
-  if (cartItems.length === 0 && !emailSent) {
+  if (cartItems.length === 0 && !emailSent && !showGame) {
     return (
       <div className="min-h-screen bg-cream">
         {/* Header */}
