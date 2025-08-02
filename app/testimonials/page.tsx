@@ -112,6 +112,29 @@ Please add this to the website testimonials!`
             </CardContent>
           </Card>
 
+          {/* Kathryn's Testimonial */}
+          <Card className="border-2 border-peach/20 bg-white mb-8">
+            <CardContent className="p-8">
+              <div className="text-center mb-6">
+                <div className="flex justify-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                  "Winnie brought me a box of her cookies last year when she was just starting her company. She
+                  carefully left them on my doorstep, not knowing I was on vacation. Weeks later, I discovered the
+                  darling Collina box shredded in the garden. I have since tried her delicious, scrumptious cookies and
+                  can highly recommend them, apparently so can all the raccoons in Lake Oswego."
+                </blockquote>
+                <div className="flex items-center justify-center gap-2">
+                  <Heart className="h-5 w-5 text-peach" />
+                  <span className="font-semibold text-gray-800">Kathryn Latour</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Submit Testimonial Section */}
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Testimonial Form */}
