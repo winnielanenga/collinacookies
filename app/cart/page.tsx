@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cookie, Plus, Minus, Trash2, ShoppingBag, Mail, CheckCircle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Cookie, Plus, Minus, Trash2, ShoppingBag, Mail, CheckCircle, Tag, Percent } from "lucide-react"
 import Link from "next/link"
 import { useCart } from "../hooks/useCart"
 import { useState } from "react"
@@ -12,6 +13,52 @@ export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart()
   const [emailSent, setEmailSent] = useState(false)
   const [showGame, setShowGame] = useState(false)
+  const [promoCode, setPromoCode] = useState("")
+  const [appliedPromo, setAppliedPromo] = useState<{
+    code: string
+    discount: number
+    type: "percent" | "fixed"
+  } | null>(null)
+  const [promoError, setPromoError] = useState("")
+
+  // Available promo codes
+  const promoCodes = {
+    "1STORDER": { discount: 1, type: "fixed" as const, description: "First Order Discount" },
+    BACKTOSCHOOL: { discount: 10, type: "percent" as const, description: "Back to School Special" },
+    HAPPYHOLIDAYS: { discount: 15, type: "percent" as const, description: "Happy Holidays Discount" },
+  }
+
+  const handleApplyPromo = () => {
+    const upperCode = promoCode.toUpperCase()
+    if (promoCodes[upperCode as keyof typeof promoCodes]) {
+      const promo = promoCodes[upperCode as keyof typeof promoCodes]
+      setAppliedPromo({ code: upperCode, ...promo })
+      setPromoError("")
+    } else {
+      setPromoError("Invalid promo code. Try 1STORDER, BACKTOSCHOOL, or HAPPYHOLIDAYS!")
+      setAppliedPromo(null)
+    }
+  }
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null)
+    setPromoCode("")
+    setPromoError("")
+  }
+
+  const calculateDiscount = () => {
+    if (!appliedPromo) return 0
+    const subtotal = getCartTotal()
+    if (appliedPromo.type === "percent") {
+      return (subtotal * appliedPromo.discount) / 100
+    } else {
+      return appliedPromo.discount
+    }
+  }
+
+  const getFinalTotal = () => {
+    return Math.max(0, getCartTotal() - calculateDiscount())
+  }
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return
@@ -21,8 +68,17 @@ export default function CartPage() {
       .map((item) => `${item.quantity} dozen ${item.name} - $${(item.price * item.quantity).toFixed(2)}`)
       .join("\n")
 
-    const total = getCartTotal()
-    const message = `Hi Winnie! I'd like to place an order:\n\n${orderSummary}\n\nTotal: $${total.toFixed(2)}\n\nI can pay with cash on delivery or through your EF Tours donation page. Please let me know about delivery details. Thank you!`
+    const subtotal = getCartTotal()
+    const discount = calculateDiscount()
+    const total = getFinalTotal()
+
+    let message = `Hi Winnie! I'd like to place an order:\n\n${orderSummary}\n\nSubtotal: $${subtotal.toFixed(2)}`
+
+    if (appliedPromo) {
+      message += `\nPromo Code: ${appliedPromo.code} (${appliedPromo.description})\nDiscount: -$${discount.toFixed(2)}`
+    }
+
+    message += `\nTotal: $${total.toFixed(2)}\n\nI can pay with cash on delivery or through your EF Tours donation page. Please let me know about delivery details. Thank you!`
 
     // Create mailto link
     const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=Cookie Order&body=${encodeURIComponent(message)}`
@@ -37,6 +93,9 @@ export default function CartPage() {
     setEmailSent(false)
     setShowGame(true)
     clearCart()
+    setAppliedPromo(null)
+    setPromoCode("")
+    setPromoError("")
   }
 
   if (cartItems.length === 0 && !emailSent && !showGame) {
@@ -225,8 +284,76 @@ export default function CartPage() {
                     <hr className="border-gray-200" />
 
                     <div className="flex justify-between text-lg font-bold">
+                      <span>Subtotal:</span>
+                      <span>${getCartTotal().toFixed(2)}</span>
+                    </div>
+
+                    {/* Promo Code Section */}
+                    <div className="space-y-3 pt-2">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                        <Tag className="h-4 w-4 text-peach" />
+                        Promo Code
+                      </div>
+
+                      {!appliedPromo ? (
+                        <div className="space-y-2">
+                          <div className="flex gap-2">
+                            <Input
+                              placeholder="Enter promo code"
+                              value={promoCode}
+                              onChange={(e) => setPromoCode(e.target.value)}
+                              className="text-sm"
+                            />
+                            <Button
+                              onClick={handleApplyPromo}
+                              variant="outline"
+                              size="sm"
+                              className="border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
+                            >
+                              Apply
+                            </Button>
+                          </div>
+                          {promoError && <p className="text-xs text-red-500">{promoError}</p>}
+                          <div className="text-xs text-gray-500">
+                            <p>Try: 1STORDER, BACKTOSCHOOL, or HAPPYHOLIDAYS</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Percent className="h-4 w-4 text-green-600" />
+                              <div>
+                                <p className="text-sm font-semibold text-green-800">{appliedPromo.code}</p>
+                                <p className="text-xs text-green-600">{appliedPromo.description}</p>
+                              </div>
+                            </div>
+                            <Button
+                              onClick={handleRemovePromo}
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50 h-6 w-6 p-0"
+                            >
+                              ×
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {appliedPromo && (
+                      <>
+                        <div className="flex justify-between text-sm text-green-600">
+                          <span>Discount ({appliedPromo.code}):</span>
+                          <span>-${calculateDiscount().toFixed(2)}</span>
+                        </div>
+                        <hr className="border-gray-200" />
+                      </>
+                    )}
+
+                    <div className="flex justify-between text-xl font-bold">
                       <span>Total:</span>
-                      <span className="text-peach">${getCartTotal().toFixed(2)}</span>
+                      <span className="text-peach">${getFinalTotal().toFixed(2)}</span>
                     </div>
 
                     <div className="space-y-3 pt-4">
