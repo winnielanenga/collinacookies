@@ -23,9 +23,9 @@ export default function CartPage() {
 
   // Available promo codes
   const promoCodes = {
-    "1STORDER": { discount: 1, type: "fixed" as const, description: "First Order Discount" },
-    BACKTOSCHOOL: { discount: 10, type: "percent" as const, description: "Back to School Special" },
-    HAPPYHOLIDAYS: { discount: 15, type: "percent" as const, description: "Happy Holidays Discount" },
+    "1STORDER": { discount: 1, type: "fixed", description: "First Order Discount" },
+    BACKTOSCHOOL: { discount: 10, type: "percent", description: "Back to School Special" },
+    HAPPYHOLIDAYS: { discount: 15, type: "percent", description: "Happy Holidays Discount" },
   }
 
   const handleApplyPromo = () => {
@@ -314,9 +314,6 @@ export default function CartPage() {
                             </Button>
                           </div>
                           {promoError && <p className="text-xs text-red-500">{promoError}</p>}
-                          <div className="text-xs text-gray-500">
-                            <p>Try: 1STORDER, BACKTOSCHOOL, or HAPPYHOLIDAYS</p>
-                          </div>
                         </div>
                       ) : (
                         <div className="bg-green-50 border border-green-200 rounded-lg p-3">
