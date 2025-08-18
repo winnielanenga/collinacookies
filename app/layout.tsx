@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Collina Cookies - Handcrafted with Love",
   description:
     "Delicious homemade cookies by Winnie Lanenga. Classic flavors, seasonal specialties, and custom bakes made with love.",
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({

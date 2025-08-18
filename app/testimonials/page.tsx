@@ -92,7 +92,7 @@ Please add this to the website testimonials!`
       <div className="container mx-auto px-4 pb-16">
         <div className="max-w-4xl mx-auto">
           {/* Featured Testimonial */}
-          <Card className="border-2 border-peach/20 bg-peach/5 mb-12">
+          <Card className="border-2 border-peach/20 bg-peach/5 mb-8">
             <CardContent className="p-8">
               <div className="text-center mb-6">
                 <div className="flex justify-center mb-4">
@@ -107,6 +107,28 @@ Please add this to the website testimonials!`
                 <div className="flex items-center justify-center gap-2">
                   <Heart className="h-5 w-5 text-peach" />
                   <span className="font-semibold text-gray-800">Diane Youd</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Milessa's Testimonial */}
+          <Card className="border-2 border-peach/20 bg-white mb-8">
+            <CardContent className="p-8">
+              <div className="text-center mb-6">
+                <div className="flex justify-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                  "I love that Winnie not only offers fresh, delicious cookies, but also gives us the option to buy her
+                  dough and bake them at home whenever we'd like. Her creative recipes, professional packaging, and
+                  top-notch service make the whole experience even sweeter!"
+                </blockquote>
+                <div className="flex items-center justify-center gap-2">
+                  <Heart className="h-5 w-5 text-peach" />
+                  <span className="font-semibold text-gray-800">Milessa Lowrie</span>
                 </div>
               </div>
             </CardContent>

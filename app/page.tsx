@@ -18,6 +18,7 @@ export default function Home() {
       price: 7.0,
       category: "classic",
       image: "/images/loaded-chocolate-chip.jpeg",
+      hasDough: true,
     },
     {
       id: 2,
@@ -26,6 +27,7 @@ export default function Home() {
       price: 7.0,
       category: "classic",
       image: "/images/salt-straw-snickerdoodles.jpeg",
+      hasDough: true,
     },
     {
       id: 3,
@@ -34,6 +36,7 @@ export default function Home() {
       price: 7.0,
       category: "classic",
       image: "/images/key-lime-snowballs.jpeg",
+      hasDough: true,
     },
   ]
 
@@ -53,6 +56,30 @@ export default function Home() {
       price: 7.0,
       category: "seasonal",
       image: "/images/edible-cookie-dough.jpeg",
+    },
+  ]
+
+  const doughOptions = [
+    {
+      id: 11,
+      name: "Loaded Chocolate Chip Dough",
+      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
+      price: 7.0,
+      category: "dough",
+    },
+    {
+      id: 12,
+      name: "Salt & Straw Snickerdoodle Dough",
+      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
+      price: 7.0,
+      category: "dough",
+    },
+    {
+      id: 13,
+      name: "Key Lime Snowballs Dough",
+      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
+      price: 7.0,
+      category: "dough",
     },
   ]
 
@@ -216,12 +243,27 @@ export default function Home() {
                   <CardTitle className="text-xl text-gray-800">{cookie.name}</CardTitle>
                   <div className="text-2xl font-bold text-peach">${cookie.price.toFixed(2)} per dozen</div>
                 </CardHeader>
-                <CardContent className="text-center">
+                <CardContent className="text-center space-y-3">
                   <CardDescription className="text-gray-600 mb-4">{cookie.description}</CardDescription>
-                  <Button onClick={() => addToCart(cookie)} className="w-full bg-peach hover:bg-peach/90 text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
+                  <div className="space-y-2">
+                    <Button onClick={() => addToCart(cookie)} className="w-full bg-peach hover:bg-peach/90 text-white">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Baked Cookies
+                    </Button>
+                    {cookie.hasDough && (
+                      <Button
+                        onClick={() => {
+                          const doughVersion = doughOptions.find((d) => d.name.includes(cookie.name.split(" ")[0]))
+                          if (doughVersion) addToCart(doughVersion)
+                        }}
+                        variant="outline"
+                        className="w-full border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Cookie Dough
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -230,7 +272,7 @@ export default function Home() {
       </section>
 
       {/* Seasonal Cookies Section */}
-      <section id="seasonal" className="py-16 px-4">
+      <section id="seasonal" className="py-16 px-4 bg-white/50">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <Badge className="bg-pink/20 text-pink-800 mb-4">Limited Time</Badge>
