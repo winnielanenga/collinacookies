@@ -93,7 +93,7 @@ Please add this to the website testimonials!`
         <div className="max-w-4xl mx-auto">
           {/* Featured Testimonial */}
           <Card className="border-2 border-peach/20 bg-peach/5 mb-8">
-            <CardContent className="p-8">
+            <CardContent className="p-8 flex-row">
               <div className="text-center mb-6">
                 <div className="flex justify-center mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -166,7 +166,7 @@ Please add this to the website testimonials!`
                   <MessageCircle className="h-6 w-6 text-pink" />
                   Share Your Experience
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="italic">
                   Loved your cookies? I'd love to hear from you! Your testimonial might be featured on this page.
                 </CardDescription>
               </CardHeader>

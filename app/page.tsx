@@ -35,7 +35,7 @@ export default function Home() {
       description: "Buttery shortbread with a zesty lime kick and a powdered sugar finish",
       price: 7.0,
       category: "classic",
-      image: "/images/key-lime-snowballs.jpeg",
+      image: "/images/key-lime-snowballs-new.jpeg",
       hasDough: true,
     },
   ]
@@ -43,19 +43,28 @@ export default function Home() {
   const seasonalCookies = [
     {
       id: 4,
-      name: "Raspberry Lime Thumbprints",
-      description: "Buttery shortbread with a zesty lime kick and a powdered sugar finish",
-      price: 7.0,
+      name: "Fall Bake Box",
+      description: (
+        <div className="text-left">
+          <div className="mb-2 italic">Includes:</div>
+          <div className="space-y-1 mb-2">
+            <div>• 4 Baked Apple Donuts topped with a silky Boiled Cider Glaze</div>
+            <div>• 4 Chai Spice Cookies infused with cinnamon, ginger, cardamom & clove</div>
+          </div>
+          <div className="text-center">The perfect cozy duo to share (or keep all to yourself) this autumn!</div>
+        </div>
+      ),
+      price: 10.0,
       category: "seasonal",
-      image: "/images/raspberry-lime-thumbprints.jpeg",
+      image: "/images/fall-bake-box-final.png", // Updated to new image
     },
     {
       id: 5,
-      name: "Edible Cookie Dough",
-      description: "My classic chocolate chip cookie dough, made safe to eat raw!",
+      name: "Chai Spice Cookies",
+      description: "Cookies infused with cinnamon, ginger, cardamom & clove",
       price: 7.0,
       category: "seasonal",
-      image: "/images/edible-cookie-dough.jpeg",
+      image: "/images/chai-spice-cookies.jpeg",
     },
   ]
 
@@ -278,7 +287,7 @@ export default function Home() {
             <Badge className="bg-pink/20 text-pink-800 mb-4">Limited Time</Badge>
             <h3 className="text-4xl font-bold text-gray-800 mb-4">Seasonal Specialties</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Special flavors that rotate throughout the year - get them while they last!
+              Cozy fall flavors perfect for the season - available through autumn!
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -302,10 +311,14 @@ export default function Home() {
                 </div>
                 <CardHeader className="text-center">
                   <CardTitle className="text-xl text-gray-800">{cookie.name}</CardTitle>
-                  <div className="text-2xl font-bold text-pink">${cookie.price.toFixed(2)} per dozen</div>
+                  <div className="text-2xl font-bold text-pink">
+                    ${cookie.price.toFixed(2)} {cookie.name === "Fall Bake Box" ? "per box" : "per dozen"}
+                  </div>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <CardDescription className="text-gray-600 mb-4">{cookie.description}</CardDescription>
+                  <CardDescription className="text-gray-600 mb-4">
+                    {typeof cookie.description === "string" ? cookie.description : cookie.description}
+                  </CardDescription>
                   <Button onClick={() => addToCart(cookie)} className="w-full bg-pink hover:bg-pink/90 text-white">
                     <Plus className="h-4 w-4 mr-2" />
                     Add to Cart
