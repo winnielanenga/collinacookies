@@ -93,14 +93,14 @@ Please add this to the website testimonials!`
         <div className="max-w-4xl mx-auto">
           {/* Featured Testimonial */}
           <Card className="border-2 border-peach/20 bg-peach/5 mb-8">
-            <CardContent className="p-8 flex-row">
-              <div className="text-center mb-6">
-                <div className="flex justify-center mb-4">
+            <CardContent className="p-6 flex-row">
+              <div className="text-center mb-4">
+                <div className="flex justify-center mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <blockquote className="text-xl text-gray-700 italic mb-6 leading-relaxed">
+                <blockquote className="text-base text-gray-700 italic mb-4 leading-relaxed">
                   "Fresh, sweet, timely, and delicious. She is the brightest and kindest entrepreneur! This might be the
                   beginning of something big! Watch out Crumbl, here comes Winnie!"
                 </blockquote>
@@ -114,14 +114,14 @@ Please add this to the website testimonials!`
 
           {/* Milessa's Testimonial */}
           <Card className="border-2 border-peach/20 bg-white mb-8">
-            <CardContent className="p-8">
-              <div className="text-center mb-6">
-                <div className="flex justify-center mb-4">
+            <CardContent className="p-6">
+              <div className="text-center mb-4">
+                <div className="flex justify-center mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                <blockquote className="text-base text-gray-700 italic mb-4 leading-relaxed">
                   "I love that Winnie not only offers fresh, delicious cookies, but also gives us the option to buy her
                   dough and bake them at home whenever we'd like. Her creative recipes, professional packaging, and
                   top-notch service make the whole experience even sweeter!"
@@ -134,16 +134,41 @@ Please add this to the website testimonials!`
             </CardContent>
           </Card>
 
-          {/* Kathryn's Testimonial */}
+          {/* Heather's Testimonial */}
           <Card className="border-2 border-peach/20 bg-white mb-8">
-            <CardContent className="p-8">
-              <div className="text-center mb-6">
-                <div className="flex justify-center mb-4">
+            <CardContent className="p-6">
+              <div className="text-center mb-4">
+                <div className="flex justify-center mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <blockquote className="text-lg text-gray-700 italic mb-6 leading-relaxed">
+                <blockquote className="text-base text-gray-700 italic mb-4 leading-relaxed">
+                  "Winnie's Chai Spice Cookies are pure comfort in every bite, and her Loaded Chocolate Chip cookies are
+                  the perfect mix of chewy, melty, and rich. They taste just like the cookies my grandmother used to
+                  make...baked with love. The cookies were hand-delivered with such care, still warm from the oven! The
+                  packaging was beautiful and very professional. It's such a joy to support Winnie's big dream of
+                  traveling to Europe. I've shared her cookies with friends and family, and everyone who tries them
+                  wants to know where they can get their own. Winnie's cookies aren't just delicious, they're magical."
+                </blockquote>
+                <div className="flex items-center justify-center gap-2">
+                  <Heart className="h-5 w-5 text-peach" />
+                  <span className="font-semibold text-gray-800">Heather Bogaty</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Kathryn's Testimonial */}
+          <Card className="border-2 border-peach/20 bg-white mb-8">
+            <CardContent className="p-6">
+              <div className="text-center mb-4">
+                <div className="flex justify-center mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <blockquote className="text-base text-gray-700 italic mb-4 leading-relaxed">
                   "Winnie brought me a box of her cookies last year when she was just starting her company. She
                   carefully left them on my doorstep, not knowing I was on vacation. Weeks later, I discovered the
                   darling Collina box shredded in the garden. I have since tried her delicious, scrumptious cookies and
