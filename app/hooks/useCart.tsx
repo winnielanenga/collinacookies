@@ -27,32 +27,32 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const [isMounted, setIsMounted] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
 
+  // Only load from localStorage after client-side hydration
   useEffect(() => {
-    setIsMounted(true)
-    if (typeof window !== "undefined") {
-      const savedCart = localStorage.getItem("collina-cookies-cart")
-      if (savedCart) {
-        try {
-          setCartItems(JSON.parse(savedCart))
-        } catch (e) {
-          console.error("Failed to parse cart from localStorage", e)
-        }
+    const savedCart = localStorage.getItem("collina-cookies-cart")
+    if (savedCart) {
+      try {
+        setCartItems(JSON.parse(savedCart))
+      } catch (e) {
+        console.error("Failed to load cart", e)
       }
     }
+    setHydrated(true)
   }, [])
 
+  // Save to localStorage whenever cart changes (but only after hydration)
   useEffect(() => {
-    if (isMounted && typeof window !== "undefined") {
+    if (hydrated) {
       localStorage.setItem("collina-cookies-cart", JSON.stringify(cartItems))
     }
-  }, [cartItems, isMounted])
+  }, [cartItems, hydrated])
 
   const addToCart = (cookie: Cookie) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === cookie.id)
-      if (existingItem) {
+      const existing = prev.find((item) => item.id === cookie.id)
+      if (existing) {
         return prev.map((item) => (item.id === cookie.id ? { ...item, quantity: item.quantity + 1 } : item))
       }
       return [...prev, { ...cookie, quantity: 1 }]

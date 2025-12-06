@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -194,20 +196,29 @@ export default function Home() {
             <div className="relative mb-8 isolate">
               <Card className="border-2 border-peach/20 bg-white">
                 <CardContent className="p-8">
-                  <div className="flex justify-center mb-4 gap-1">
-                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  </div>
-                  <blockquote className="text-lg text-gray-700 italic mb-4 leading-relaxed">
-                    "Fresh, sweet, timely, and delicious. She is the brightest and kindest entrepreneur! This might be
-                    the beginning of something big! Watch out Crumbl, here comes Winnie!"
-                  </blockquote>
-                  <div className="flex items-center justify-center gap-2">
-                    <Heart className="h-5 w-5 text-peach" />
-                    <span className="font-semibold text-gray-800">Diane Youd</span>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between mb-2 text-sm font-semibold">
+                        <span className="text-gray-700">Fundraising Goal</span>
+                        <span className="text-peach">100%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+                        <div
+                          className="bg-gradient-to-r from-peach to-pink h-full rounded-full transition-all duration-500"
+                          style={{ width: "100%" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 pt-4">
+                      <div className="bg-peach/10 rounded-lg p-4">
+                        <p className="text-3xl font-bold text-peach mb-1">100%</p>
+                        <p className="text-sm text-gray-600">Goal Reached</p>
+                      </div>
+                      <div className="bg-pink/10 rounded-lg p-4">
+                        <p className="text-3xl font-bold text-pink mb-1">2026</p>
+                        <p className="text-sm text-gray-600">Trip Year</p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
