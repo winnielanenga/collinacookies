@@ -1,15 +1,12 @@
-"use client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Cookie, Heart, Star, ShoppingCart, Plus } from "lucide-react"
+import { Cookie, Heart, Star } from "lucide-react"
 import Link from "next/link"
-import { useCart } from "./hooks/useCart"
-import Image from "next/image"
+import Header from "./components/Header"
+import CookieCard from "./components/CookieCard"
 
 export default function Home() {
-  const { addToCart, cartItems } = useCart()
-
   const classicCookies = [
     {
       id: 1,
@@ -43,28 +40,12 @@ export default function Home() {
   const seasonalCookies = [
     {
       id: 4,
-      name: "Fall Bake Box",
-      description: (
-        <div className="text-left">
-          <div className="mb-2 italic">Includes:</div>
-          <div className="space-y-1 mb-2">
-            <div>• 4 Baked Apple Donuts topped with a silky Boiled Cider Glaze</div>
-            <div>• 4 Chai Spice Cookies infused with cinnamon, ginger, cardamom & clove</div>
-          </div>
-          <div className="text-center">The perfect cozy duo to share (or keep all to yourself) this autumn!</div>
-        </div>
-      ),
-      price: 10.0,
-      category: "seasonal",
-      image: "/images/fall-bake-box-final.png", // Updated to new image
-    },
-    {
-      id: 5,
-      name: "Chai Spice Cookies",
-      description: "Cookies infused with cinnamon, ginger, cardamom & clove",
+      name: "Sugar Cookie Dough",
+      description:
+        "Our sugar cookie dough comes ready to roll, cut, and bake into perfect festive shapes. Homemade flavor without the hassle. Icing recipe included!",
       price: 7.0,
       category: "seasonal",
-      image: "/images/chai-spice-cookies.jpeg",
+      image: "/images/sugar-cookie-dough.png",
     },
   ]
 
@@ -92,102 +73,9 @@ export default function Home() {
     },
   ]
 
-  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
-
   return (
     <div className="min-h-screen bg-cream">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-peach/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Cookie className="h-8 w-8 text-peach" />
-              <h1 className="text-2xl font-bold text-gray-800">Collina Cookies</h1>
-            </Link>
-            <nav className="flex items-center gap-6">
-              {/* Desktop Navigation */}
-              <div className="hidden md:flex items-center gap-6">
-                <a href="#classics" className="text-gray-700 hover:text-peach transition-colors">
-                  Classic Flavors
-                </a>
-                <a href="#seasonal" className="text-gray-700 hover:text-peach transition-colors">
-                  Seasonal
-                </a>
-                <Link href="/story" className="text-gray-700 hover:text-peach transition-colors">
-                  My Story
-                </Link>
-                <Link href="/testimonials" className="text-gray-700 hover:text-peach transition-colors">
-                  Testimonials
-                </Link>
-                <Link href="/payment" className="text-gray-700 hover:text-peach transition-colors">
-                  Payment
-                </Link>
-                <Link href="/contact" className="text-gray-700 hover:text-peach transition-colors">
-                  Contact + FAQ
-                </Link>
-              </div>
-
-              {/* Mobile Menu Button */}
-              <div className="md:hidden">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-                  onClick={() => {
-                    const menu = document.getElementById("mobile-menu")
-                    menu?.classList.toggle("hidden")
-                  }}
-                >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                  Menu
-                </Button>
-              </div>
-
-              {/* Cart Button */}
-              <Link href="/cart" className="relative">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Cart
-                  {cartItemCount > 0 && <Badge className="ml-2 bg-pink text-white text-xs">{cartItemCount}</Badge>}
-                </Button>
-              </Link>
-            </nav>
-
-            {/* Mobile Menu Dropdown */}
-            <div
-              id="mobile-menu"
-              className="hidden md:hidden bg-white border-t border-peach/20 absolute top-full left-0 right-0 z-40"
-            >
-              <div className="container mx-auto px-4 py-4 space-y-3">
-                <a href="#classics" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  Classic Flavors
-                </a>
-                <a href="#seasonal" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  Seasonal
-                </a>
-                <Link href="/story" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  My Story
-                </Link>
-                <Link href="/testimonials" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  Testimonials
-                </Link>
-                <Link href="/payment" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  Payment
-                </Link>
-                <Link href="/contact" className="block text-gray-700 hover:text-peach transition-colors py-2">
-                  Contact + FAQ
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="py-20 px-4">
@@ -231,50 +119,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {classicCookies.map((cookie) => (
-              <Card
-                key={cookie.id}
-                className="border-2 border-peach/20 hover:border-peach/40 transition-colors bg-white overflow-hidden"
-              >
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={cookie.image || "/placeholder.svg"}
-                    alt={`Delicious ${cookie.name} cookies`}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <Cookie className="h-6 w-6 text-peach" />
-                    </div>
-                  </div>
-                </div>
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl text-gray-800">{cookie.name}</CardTitle>
-                  <div className="text-2xl font-bold text-peach">${cookie.price.toFixed(2)} per dozen</div>
-                </CardHeader>
-                <CardContent className="text-center space-y-3">
-                  <CardDescription className="text-gray-600 mb-4">{cookie.description}</CardDescription>
-                  <div className="space-y-2">
-                    <Button onClick={() => addToCart(cookie)} className="w-full bg-peach hover:bg-peach/90 text-white">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Baked Cookies
-                    </Button>
-                    {cookie.hasDough && (
-                      <Button
-                        onClick={() => {
-                          const doughVersion = doughOptions.find((d) => d.name.includes(cookie.name.split(" ")[0]))
-                          if (doughVersion) addToCart(doughVersion)
-                        }}
-                        variant="outline"
-                        className="w-full border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Cookie Dough
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <CookieCard key={cookie.id} cookie={cookie} doughOptions={doughOptions} variant="classic" />
             ))}
           </div>
         </div>
@@ -287,44 +132,12 @@ export default function Home() {
             <Badge className="bg-pink/20 text-pink-800 mb-4">Limited Time</Badge>
             <h3 className="text-4xl font-bold text-gray-800 mb-4">Seasonal Specialties</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Cozy fall flavors perfect for the season - available through autumn!
+              Festive holiday flavors perfect for the season - create your own decorated masterpieces!
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-1 gap-8 max-w-md mx-auto">
             {seasonalCookies.map((cookie) => (
-              <Card
-                key={cookie.id}
-                className="border-2 border-pink/20 hover:border-pink/40 transition-colors bg-white overflow-hidden"
-              >
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={cookie.image || "/placeholder.svg"}
-                    alt={`Delicious ${cookie.name} cookies`}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <Star className="h-6 w-6 text-pink" />
-                    </div>
-                  </div>
-                </div>
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl text-gray-800">{cookie.name}</CardTitle>
-                  <div className="text-2xl font-bold text-pink">
-                    ${cookie.price.toFixed(2)} {cookie.name === "Fall Bake Box" ? "per box" : "per dozen"}
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <CardDescription className="text-gray-600 mb-4">
-                    {typeof cookie.description === "string" ? cookie.description : cookie.description}
-                  </CardDescription>
-                  <Button onClick={() => addToCart(cookie)} className="w-full bg-pink hover:bg-pink/90 text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
-                </CardContent>
-              </Card>
+              <CookieCard key={cookie.id} cookie={cookie} variant="seasonal" />
             ))}
           </div>
         </div>
@@ -339,10 +152,12 @@ export default function Home() {
 
             <Card className="border-2 border-peach/20 bg-white mb-8">
               <CardContent className="p-8">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
-                  ))}
+                <div className="flex justify-center mb-4 gap-1">
+                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
                 </div>
                 <blockquote className="text-lg text-gray-700 italic mb-4 leading-relaxed">
                   "Fresh, sweet, timely, and delicious. She is the brightest and kindest entrepreneur! This might be the
@@ -376,27 +191,35 @@ export default function Home() {
               am to my goal and help me get there.
             </p>
 
-            <Card className="border-2 border-peach/20 bg-white mb-8">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center gap-4 mb-6">
-                  <div className="text-4xl">✈️</div>
-                  <div>
-                    <h4 className="text-2xl font-bold text-gray-800">Track My Journey</h4>
-                    <p className="text-gray-600">See my real-time progress toward Europe 2026!</p>
+            <div className="relative mb-8 isolate">
+              <Card className="border-2 border-peach/20 bg-white">
+                <CardContent className="p-8">
+                  <div className="flex justify-center mb-4 gap-1">
+                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                    <Star className="h-6 w-6 text-yellow-400 fill-current" />
+                  </div>
+                  <blockquote className="text-lg text-gray-700 italic mb-4 leading-relaxed">
+                    "Fresh, sweet, timely, and delicious. She is the brightest and kindest entrepreneur! This might be
+                    the beginning of something big! Watch out Crumbl, here comes Winnie!"
+                  </blockquote>
+                  <div className="flex items-center justify-center gap-2">
+                    <Heart className="h-5 w-5 text-peach" />
+                    <span className="font-semibold text-gray-800">Diane Youd</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                <div className="transform rotate-[-15deg]">
+                  <div className="border-8 border-green-600 rounded-xl px-12 py-6 bg-white/95 shadow-lg">
+                    <p className="text-6xl font-black text-green-600 tracking-wider">COMPLETED</p>
                   </div>
                 </div>
-
-                <div className="space-y-4">
-                  <p className="text-gray-700">
-                    🍪 <strong>Every $7 dozen = One step closer to Europe!</strong>
-                  </p>
-                  <p className="text-gray-600">
-                    My official EF Tours page shows exactly how much I've raised and how much I still need. When you buy
-                    cookies OR donate directly, you're helping make this dream come true!
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="https://account.eftours.com/donations/YlnEpn" target="_blank" rel="noopener noreferrer">

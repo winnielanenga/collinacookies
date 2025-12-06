@@ -27,19 +27,27 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [isMounted, setIsMounted] = useState(false)
 
-  // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("collina-cookies-cart")
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart))
+    setIsMounted(true)
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem("collina-cookies-cart")
+      if (savedCart) {
+        try {
+          setCartItems(JSON.parse(savedCart))
+        } catch (e) {
+          console.error("Failed to parse cart from localStorage", e)
+        }
+      }
     }
   }, [])
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("collina-cookies-cart", JSON.stringify(cartItems))
-  }, [cartItems])
+    if (isMounted && typeof window !== "undefined") {
+      localStorage.setItem("collina-cookies-cart", JSON.stringify(cartItems))
+    }
+  }, [cartItems, isMounted])
 
   const addToCart = (cookie: Cookie) => {
     setCartItems((prev) => {

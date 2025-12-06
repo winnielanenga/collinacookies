@@ -119,8 +119,8 @@ export default function StoryPage() {
           </Card>
 
           {/* My Mission */}
-          <Card className="mb-12 border-2 border-peach/20 bg-peach/5">
-            <CardContent className="p-8 text-center">
+          <Card className="mb-12 border-2 border-peach/20 bg-peach/5 text-center">
+            <CardContent className="p-8">
               <div className="w-20 h-20 bg-peach/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Users className="h-10 w-10 text-peach" />
               </div>
@@ -138,25 +138,36 @@ export default function StoryPage() {
           </Card>
 
           {/* Europe Progress Tracker */}
-          <Card className="mb-12 border-2 border-peach/20 bg-peach/5 text-center">
-            <CardContent className="p-8">
-              <div className="w-20 h-20 bg-peach/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <div className="text-2xl">✈️</div>
+          <div className="relative mb-12 isolate">
+            <Card className="border-2 border-peach/20 bg-peach/5 text-center">
+              <CardContent className="p-8">
+                <div className="w-20 h-20 bg-peach/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="text-2xl">✈️</div>
+                </div>
+                <h3 className="text-3xl font-bold text-gray-800 mb-6">Track My Europe Journey</h3>
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  Want to see exactly how close I am to my Europe 2026 goal? My official EF Tours page shows my
+                  real-time progress! Every cookie order and every donation gets me one step closer to exploring the
+                  beautiful countries I've dreamed of visiting.
+                </p>
+                <a href="https://account.eftours.com/donations/YlnEpn" target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
+                    <Heart className="mr-2 h-5 w-5" />
+                    View My Progress Tracker
+                  </Button>
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* COMPLETED Stamp */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+              <div className="transform rotate-[-15deg]">
+                <div className="border-8 border-green-600 rounded-xl px-12 py-6 bg-white/95 shadow-lg">
+                  <p className="text-6xl font-black text-green-600 tracking-wider">COMPLETED</p>
+                </div>
               </div>
-              <h3 className="text-3xl font-bold text-gray-800 mb-6">Track My Europe Journey</h3>
-              <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                Want to see exactly how close I am to my Europe 2026 goal? My official EF Tours page shows my real-time
-                progress! Every cookie order and every donation gets me one step closer to exploring the beautiful
-                countries I've dreamed of visiting.
-              </p>
-              <a href="https://account.eftours.com/donations/YlnEpn" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                  <Heart className="mr-2 h-5 w-5" />
-                  View My Progress Tracker
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Call to Action */}
           <div className="text-center">
