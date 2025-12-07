@@ -18,6 +18,7 @@ export default function ContactPage() {
     phone: "",
     orderType: "",
     message: "",
+    preferText: false,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,7 +29,7 @@ export default function ContactPage() {
     const body = `New message from ${formData.name}:
 
 Email: ${formData.email}
-Phone: ${formData.phone || "Not provided"}
+Phone: ${formData.phone || "Not provided"}${formData.phone && formData.preferText ? " (Prefers text messages)" : ""}
 Interest: ${formData.orderType || "Not specified"}
 
 Message:
@@ -40,7 +41,7 @@ Please respond to this inquiry!`
     window.location.href = mailtoLink
 
     alert("Thank you for your message! I'll get back to you soon!")
-    setFormData({ name: "", email: "", phone: "", orderType: "", message: "" })
+    setFormData({ name: "", email: "", phone: "", orderType: "", message: "", preferText: false })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -132,7 +133,7 @@ Please respond to this inquiry!`
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">Phone Number (Optional)</Label>
                   <Input
                     id="phone"
                     name="phone"
@@ -142,6 +143,21 @@ Please respond to this inquiry!`
                     className="mt-1"
                     placeholder="(555) 123-4567"
                   />
+                  {formData.phone && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <input
+                        type="checkbox"
+                        id="preferText"
+                        name="preferText"
+                        checked={formData.preferText}
+                        onChange={(e) => setFormData({ ...formData, preferText: e.target.checked })}
+                        className="h-4 w-4 text-peach focus:ring-peach border-gray-300 rounded"
+                      />
+                      <Label htmlFor="preferText" className="text-sm text-gray-600 cursor-pointer">
+                        I prefer to communicate via text message
+                      </Label>
+                    </div>
+                  )}
                 </div>
 
                 <div>

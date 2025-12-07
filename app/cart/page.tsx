@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Cookie, Plus, Minus, Trash2, ShoppingBag, Mail, CheckCircle, Tag, Percent } from "lucide-react"
 import Link from "next/link"
 import { useCart } from "../hooks/useCart"
@@ -20,6 +21,8 @@ export default function CartPage() {
     type: "percent" | "fixed"
   } | null>(null)
   const [promoError, setPromoError] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [preferText, setPreferText] = useState(false)
 
   // Available promo codes
   const promoCodes = {
@@ -78,7 +81,13 @@ export default function CartPage() {
       message += `\nPromo Code: ${appliedPromo.code} (${appliedPromo.description})\nDiscount: -$${discount.toFixed(2)}`
     }
 
-    message += `\nTotal: $${total.toFixed(2)}\n\nI can pay with cash on delivery or through your EF Tours donation page. Please let me know about delivery details. Thank you!`
+    message += `\nTotal: $${total.toFixed(2)}`
+
+    if (phoneNumber) {
+      message += `\n\nPhone: ${phoneNumber}${preferText ? " (Prefers text messages)" : ""}`
+    }
+
+    message += `\n\nI can pay with cash on delivery or through your EF Tours donation page. Please let me know about delivery details. Thank you!`
 
     // Create mailto link
     const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=Cookie Order&body=${encodeURIComponent(message)}`
@@ -96,6 +105,8 @@ export default function CartPage() {
     setAppliedPromo(null)
     setPromoCode("")
     setPromoError("")
+    setPhoneNumber("")
+    setPreferText(false)
   }
 
   if (cartItems.length === 0 && !emailSent && !showGame) {
@@ -351,6 +362,35 @@ export default function CartPage() {
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total:</span>
                       <span className="text-peach">${getFinalTotal().toFixed(2)}</span>
+                    </div>
+
+                    {/* Phone Number Section */}
+                    <div className="space-y-2 pt-2 border-t border-gray-200">
+                      <Label htmlFor="phone" className="text-sm">
+                        Phone Number (Optional)
+                      </Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="(555) 123-4567"
+                        className="text-sm"
+                      />
+                      {phoneNumber && (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="preferText"
+                            checked={preferText}
+                            onChange={(e) => setPreferText(e.target.checked)}
+                            className="h-4 w-4 text-peach focus:ring-peach border-gray-300 rounded"
+                          />
+                          <Label htmlFor="preferText" className="text-xs text-gray-600 cursor-pointer">
+                            I prefer text messages
+                          </Label>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-3 pt-4">
