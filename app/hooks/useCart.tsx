@@ -21,33 +21,36 @@ interface CartContextType {
   updateQuantity: (id: number, quantity: number) => void
   clearCart: () => void
   getCartTotal: () => number
+  isLoaded: boolean
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const [hydrated, setHydrated] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
-  // Only load from localStorage after client-side hydration
   useEffect(() => {
-    const savedCart = localStorage.getItem("collina-cookies-cart")
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart))
-      } catch (e) {
-        console.error("Failed to load cart", e)
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem("collina-cookies-cart")
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart)
+          setCartItems(Array.isArray(parsed) ? parsed : [])
+        } catch (e) {
+          console.error("Failed to load cart", e)
+          setCartItems([])
+        }
       }
+      setIsLoaded(true)
     }
-    setHydrated(true)
   }, [])
 
-  // Save to localStorage whenever cart changes (but only after hydration)
   useEffect(() => {
-    if (hydrated) {
+    if (isLoaded && typeof window !== "undefined") {
       localStorage.setItem("collina-cookies-cart", JSON.stringify(cartItems))
     }
-  }, [cartItems, hydrated])
+  }, [cartItems, isLoaded])
 
   const addToCart = (cookie: Cookie) => {
     setCartItems((prev) => {
@@ -88,6 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         getCartTotal,
+        isLoaded,
       }}
     >
       {children}

@@ -5,18 +5,11 @@ import { Badge } from "@/components/ui/badge"
 import { Cookie, ShoppingCart } from "lucide-react"
 import Link from "next/link"
 import { useCart } from "../hooks/useCart"
-import { useState, useEffect } from "react"
 
 export default function Header() {
-  const { cartItems } = useCart()
-  const [mounted, setMounted] = useState(false)
+  const { cartItems, isLoaded } = useCart()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const cartItemCount =
-    mounted && Array.isArray(cartItems) ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0
+  const cartItemCount = isLoaded ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0
 
   return (
     <header className="bg-white/80 backdrop-blur-sm border-b border-peach/20 sticky top-0 z-50">
@@ -76,7 +69,7 @@ export default function Header() {
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Cart
-                {mounted && cartItemCount > 0 && (
+                {isLoaded && cartItemCount > 0 && (
                   <Badge className="ml-2 bg-pink text-white text-xs">{cartItemCount}</Badge>
                 )}
               </Button>

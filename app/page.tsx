@@ -7,6 +7,7 @@ import { Cookie, Heart, Star } from "lucide-react"
 import Link from "next/link"
 import Header from "./components/Header"
 import CookieCard from "./components/CookieCard"
+import ReviewCarousel from "./components/ReviewCarousel"
 
 export default function Home() {
   const classicCookies = [
@@ -152,25 +153,7 @@ export default function Home() {
             <Badge className="bg-pink/20 text-pink-800 mb-4">Customer Love</Badge>
             <h3 className="text-4xl font-bold text-gray-800 mb-8">What People Are Saying</h3>
 
-            <Card className="border-2 border-peach/20 bg-white mb-8">
-              <CardContent className="p-8">
-                <div className="flex justify-center mb-4 gap-1">
-                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                  <Star className="h-6 w-6 text-yellow-400 fill-current" />
-                </div>
-                <blockquote className="text-lg text-gray-700 italic mb-4 leading-relaxed">
-                  "Fresh, sweet, timely, and delicious. She is the brightest and kindest entrepreneur! This might be the
-                  beginning of something big! Watch out Crumbl, here comes Winnie!"
-                </blockquote>
-                <div className="flex items-center justify-center gap-2">
-                  <Heart className="h-5 w-5 text-peach" />
-                  <span className="font-semibold text-gray-800">Diane Youd</span>
-                </div>
-              </CardContent>
-            </Card>
+            <ReviewCarousel />
 
             <Link href="/testimonials">
               <Button size="lg" className="bg-pink hover:bg-pink/90 text-white">
