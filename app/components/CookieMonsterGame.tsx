@@ -57,21 +57,14 @@ const MAZE = [
 // Generate cookies only on valid paths
 const generateCookies = (): Position[] => {
   const cookies: Position[] = []
-  for (let y = 1; y < ROWS - 1; y++) {
-    for (let x = 1; x < COLS - 1; x++) {
-      if (MAZE[y][x] === 0 && Math.random() > 0.65) {
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (MAZE[y][x] === 0) {
         cookies.push({ x, y })
       }
     }
   }
-  while (cookies.length < 15) {
-    const x = Math.floor(Math.random() * (COLS - 2)) + 1
-    const y = Math.floor(Math.random() * (ROWS - 2)) + 1
-    if (MAZE[y][x] === 0 && !cookies.some((c) => c.x === x && c.y === y)) {
-      cookies.push({ x, y })
-    }
-  }
-  return cookies.slice(0, 18)
+  return cookies
 }
 
 // Generate chef hat ghosts
