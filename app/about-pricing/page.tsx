@@ -1,146 +1,99 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Cookie, Heart, Truck, Clock } from "lucide-react"
 import Link from "next/link"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 export default function AboutPricingPage() {
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-peach/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Cookie className="h-8 w-8 text-peach" />
-              <h1 className="text-2xl font-bold text-gray-800">Collina Cookies</h1>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-gray-700 hover:text-peach transition-colors">
-                Home
-              </Link>
-              <Link href="/story" className="text-gray-700 hover:text-peach transition-colors">
-                My Story
-              </Link>
-              <Link href="/contact" className="text-gray-700 hover:text-peach transition-colors">
-                Contact
-              </Link>
-              <Link href="/cart" className="text-gray-700 hover:text-peach transition-colors">
-                Cart
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-espresso">
+      <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-              Simple <span className="text-pink">Pricing</span>
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Every dozen cookies is $7, and every order helps me get closer to my dream trip to Europe!
-            </p>
-          </div>
+      <section className="px-4 py-24 text-center">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-5">The Fine Print, Minus the Fine Print</p>
+          <h1 className="font-carte text-5xl font-normal text-cream md:text-6xl">Simple Pricing</h1>
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-latte">
+            Every jumbo, premium bake is $5 — or mix and match any half dozen for $25!
+          </p>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-16">
-        <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 pb-24">
+        <div className="mx-auto max-w-4xl">
           {/* Pricing Card */}
-          <Card className="border-2 border-peach/20 bg-white mb-12 text-center">
-            <CardHeader>
-              <div className="w-20 h-20 bg-peach/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Cookie className="h-10 w-10 text-peach" />
+          <div className="gold-frame mb-12 bg-roast p-10 text-center md:p-12">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border border-gold/35">
+              <Cookie className="h-7 w-7 text-gold" />
+            </div>
+            <h2 className="font-carte text-4xl font-normal text-cream">
+              $5 Each <span className="text-gold">·</span> Half Dozen for $25
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-lg text-latte">
+              Every jumbo, premium bake is $5 — and when you mix and match any six, the half-dozen box is just $25.
+              That&rsquo;s one bake on the house!
+            </p>
+            <div className="mx-auto mt-8 grid max-w-2xl gap-8 text-left md:grid-cols-2">
+              <div>
+                <h3 className="eyebrow mb-3 text-[10px]">The Carte</h3>
+                <ul className="space-y-2 text-latte">
+                  <li>· Mr. Herron&rsquo;s Big Blueberry Muffins</li>
+                  <li>· Brown Butter Chocolate Chunk Cookies</li>
+                  <li>· Salt &amp; Straw Snickerdoodles</li>
+                </ul>
               </div>
-              <CardTitle className="text-4xl text-gray-800">$7 per Dozen</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-lg text-gray-600 mb-6">
-                All cookie flavors are the same price - $7 for a dozen delicious, handmade cookies!
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 text-left">
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Classic Flavors:</h4>
-                  <ul className="text-gray-600 space-y-1">
-                    <li>• Loaded Chocolate Chip</li>
-                    <li>• Salt & Straw Snickerdoodle</li>
-                    <li>• Key Lime Snowballs</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Seasonal Specials:</h4>
-                  <ul className="text-gray-600 space-y-1">
-                    <li>• Raspberry Lime Thumbprints</li>
-                    <li>• Edible Cookie Dough</li>
-                  </ul>
-                </div>
+              <div>
+                <h3 className="eyebrow mb-3 text-[10px]">Mix &amp; Match Half Dozen</h3>
+                <ul className="space-y-2 text-latte">
+                  <li>· Any 6 bakes, any combination — $25</li>
+                  <li>· Applied automatically in your cart</li>
+                </ul>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Service Details */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="border-2 border-pink/20 bg-pink/5">
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <Truck className="h-8 w-8 text-pink" />
-                  <h3 className="text-xl font-semibold text-gray-800">Free Local Delivery</h3>
-                </div>
-                <p className="text-gray-600">
-                  I deliver all orders locally at no extra charge! Delivery details will be arranged when you place your
-                  order.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-yellow/20 bg-yellow/5">
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <Clock className="h-8 w-8 text-yellow-600" />
-                  <h3 className="text-xl font-semibold text-gray-800">Fresh & Made to Order</h3>
-                </div>
-                <p className="text-gray-600">
-                  Every dozen is baked fresh just for you! Please allow 2-3 days for regular orders, 1 week for large
-                  orders.
-                </p>
-              </CardContent>
-            </Card>
+            </div>
           </div>
 
-          {/* Europe Trip Goal */}
-          <Card className="border-2 border-peach/20 bg-peach/5 text-center">
-            <CardContent className="p-8">
-              <Heart className="h-12 w-12 text-peach mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Every Order Helps My Dream!</h3>
-              <p className="text-lg text-gray-600 mb-6">
-                I'm saving every dollar from Collina Cookies for my trip to Europe in summer 2026. When you order my
-                cookies, you're not just getting delicious treats - you're helping a young entrepreneur chase her
-                dreams!
+          {/* Service Details */}
+          <div className="mb-12 grid gap-8 md:grid-cols-2">
+            <div className="border border-gold/25 bg-roast p-8">
+              <div className="mb-4 flex items-center gap-4">
+                <Truck className="h-7 w-7 text-gold" />
+                <h3 className="font-carte text-2xl font-normal text-cream">Free Local Delivery</h3>
+              </div>
+              <p className="text-latte">
+                I deliver all orders locally at no extra charge! Delivery details will be arranged when you place your
+                order.
               </p>
-              <Link href="/">
-                <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                  <Cookie className="mr-2 h-5 w-5" />
-                  Order Now & Help My Journey
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div className="border border-gold/25 bg-roast p-8">
+              <div className="mb-4 flex items-center gap-4">
+                <Clock className="h-7 w-7 text-gold" />
+                <h3 className="font-carte text-2xl font-normal text-cream">Fresh &amp; Made to Order</h3>
+              </div>
+              <p className="text-latte">
+                Every order is baked fresh just for you! Please allow 2-3 days for regular orders, 1 week for large
+                orders.
+              </p>
+            </div>
+          </div>
+
+          {/* Farmers Market */}
+          <div className="gold-frame bg-roast p-10 text-center md:p-12">
+            <Heart className="mx-auto mb-4 h-10 w-10 text-gold" />
+            <h2 className="font-carte text-3xl font-normal text-cream">Visit My Farmers&rsquo; Market Booth!</h2>
+            <p className="mx-auto mt-5 max-w-xl text-lg text-latte">
+              You can now find Collina Cookies at the Lake Oswego Farmers&rsquo; Market on select dates! Stop by the
+              booth to grab my jumbo muffins and cookies fresh — or order online anytime for free local delivery.
+            </p>
+            <Link href="/#menu" className="btn-gold mt-8">
+              <Cookie className="h-4 w-4" />
+              View the Carte
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Cookie className="h-6 w-6 text-peach" />
-            <span className="text-xl font-semibold">Collina Cookies</span>
-          </div>
-          <p className="text-gray-400 mb-4">Handcrafted with love by Winnie Lanenga</p>
-          <p className="text-sm text-gray-500">Made with ❤️ and lots of flour</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

@@ -3,13 +3,14 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Cookie, Mail, MapPin, MessageCircle, Clock, Send, CreditCard } from "lucide-react"
-import Link from "next/link"
+import { Mail, MapPin, MessageCircle, Clock, Send, CreditCard } from "lucide-react"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+
+const fieldStyles = "rounded-none border-latte/40 bg-espresso text-cream placeholder:text-latte/60"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -52,276 +53,239 @@ Please respond to this inquiry!`
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-peach/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Cookie className="h-8 w-8 text-peach" />
-              <h1 className="text-2xl font-bold text-gray-800">Collina Cookies</h1>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-gray-700 hover:text-peach transition-colors">
-                Home
-              </Link>
-              <Link href="/story" className="text-gray-700 hover:text-peach transition-colors">
-                My Story
-              </Link>
-              <Link href="/cart" className="text-gray-700 hover:text-peach transition-colors">
-                Cart
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-espresso">
+      <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-              Contact + <span className="text-pink">FAQ</span>
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              I'd love to hear from you! Whether you want to place an order, ask about custom cookies, or just say hi,
-              don't hesitate to reach out.
-            </p>
-          </div>
+      <section className="px-4 py-24 text-center">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-5">Correspondence</p>
+          <h1 className="font-carte text-5xl font-normal text-cream md:text-6xl">Contact + FAQ</h1>
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-latte">
+            I&rsquo;d love to hear from you! Whether you want to place an order, ask about custom bakes, or just say
+            hi, don&rsquo;t hesitate to reach out.
+          </p>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-16">
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <div className="container mx-auto px-4 pb-24">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
           {/* Contact Form */}
-          <Card className="border-2 border-peach/20 bg-white">
-            <CardHeader>
-              <CardTitle className="text-2xl text-gray-800 flex items-center gap-2">
-                <MessageCircle className="h-6 w-6 text-peach" />
-                Send Me a Message
-              </CardTitle>
-              <CardDescription>Fill out the form below and I'll get back to you as soon as possible!</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Your Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="mt-1"
-                      placeholder="Enter your name"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="mt-1"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
+          <div className="border border-gold/25 bg-roast p-8 md:p-10">
+            <div className="mb-2 flex items-center gap-3">
+              <MessageCircle className="h-6 w-6 text-gold" />
+              <h2 className="font-carte text-2xl font-normal text-cream">Send Me a Message</h2>
+            </div>
+            <p className="mb-8 text-sm text-latte">
+              Fill out the form below and I&rsquo;ll get back to you as soon as possible!
+            </p>
 
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-[0.18em] text-latte">
+                    Your Name *
+                  </Label>
                   <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="mt-1"
-                    placeholder="(555) 123-4567"
-                  />
-                  {formData.phone && (
-                    <div className="flex items-center gap-2 mt-2">
-                      <input
-                        type="checkbox"
-                        id="preferText"
-                        name="preferText"
-                        checked={formData.preferText}
-                        onChange={(e) => setFormData({ ...formData, preferText: e.target.checked })}
-                        className="h-4 w-4 text-peach focus:ring-peach border-gray-300 rounded"
-                      />
-                      <Label htmlFor="preferText" className="text-sm text-gray-600 cursor-pointer">
-                        I prefer to communicate via text message
-                      </Label>
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="orderType">What are you interested in?</Label>
-                  <select
-                    id="orderType"
-                    name="orderType"
-                    value={formData.orderType}
-                    onChange={handleChange}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-peach focus:border-peach"
-                  >
-                    <option value="">Select an option</option>
-                    <option value="custom">Custom Cookie Order</option>
-                    <option value="event">Event/Party Order</option>
-                    <option value="question">Just Have a Question</option>
-                  </select>
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
-                    className="mt-1 min-h-[120px]"
-                    placeholder="Tell me about your order or ask any questions you have!"
+                    className={`mt-2 ${fieldStyles}`}
+                    placeholder="Enter your name"
                   />
                 </div>
+                <div>
+                  <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-[0.18em] text-latte">
+                    Email *
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className={`mt-2 ${fieldStyles}`}
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
 
-                <Button type="submit" className="w-full bg-peach hover:bg-peach/90 text-white">
-                  <Send className="mr-2 h-4 w-4" />
-                  Send Message
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+              <div>
+                <Label htmlFor="phone" className="text-xs font-semibold uppercase tracking-[0.18em] text-latte">
+                  Phone Number (Optional)
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={`mt-2 ${fieldStyles}`}
+                  placeholder="(555) 123-4567"
+                />
+                {formData.phone && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="preferText"
+                      name="preferText"
+                      checked={formData.preferText}
+                      onChange={(e) => setFormData({ ...formData, preferText: e.target.checked })}
+                      className="h-4 w-4 rounded border-latte/40 bg-espresso accent-[#DFA94E]"
+                    />
+                    <Label htmlFor="preferText" className="cursor-pointer text-sm text-latte">
+                      I prefer to communicate via text message
+                    </Label>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="orderType" className="text-xs font-semibold uppercase tracking-[0.18em] text-latte">
+                  What are you interested in?
+                </Label>
+                <select
+                  id="orderType"
+                  name="orderType"
+                  value={formData.orderType}
+                  onChange={handleChange}
+                  className="mt-2 w-full border border-latte/40 bg-espresso px-3 py-2 text-cream focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                >
+                  <option value="">Select an option</option>
+                  <option value="custom">Custom Bake Order</option>
+                  <option value="event">Event/Party Order</option>
+                  <option value="question">Just Have a Question</option>
+                </select>
+              </div>
+
+              <div>
+                <Label htmlFor="message" className="text-xs font-semibold uppercase tracking-[0.18em] text-latte">
+                  Message *
+                </Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  className={`mt-2 min-h-[120px] ${fieldStyles}`}
+                  placeholder="Tell me about your order or ask any questions you have!"
+                />
+              </div>
+
+              <button type="submit" className="btn-gold w-full">
+                <Send className="h-4 w-4" />
+                Send Message
+              </button>
+            </form>
+          </div>
 
           {/* Contact Info & Details */}
           <div className="space-y-8">
             {/* Contact Methods */}
             <div className="grid gap-6">
-              <Card className="border-2 border-peach/20 bg-peach/5">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4">
-                    <Mail className="h-8 w-8 text-peach" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800 mb-1">Email Me</h4>
-                      <p className="text-gray-600">winnie.lanenga@gmail.com</p>
-                      <p className="text-sm text-gray-500">Best way to reach me for orders!</p>
-                    </div>
+              <div className="border border-gold/25 bg-roast p-6">
+                <div className="flex items-center gap-4">
+                  <Mail className="h-7 w-7 flex-none text-gold" />
+                  <div>
+                    <h3 className="mb-1 font-carte text-xl text-cream">Email Me</h3>
+                    <p className="text-latte">winnie.lanenga@gmail.com</p>
+                    <p className="mt-1 text-sm text-latte/70">Best way to reach me for orders!</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              <Card className="border-2 border-yellow/20 bg-yellow/5">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4">
-                    <MapPin className="h-8 w-8 text-yellow-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800 mb-1">Delivery Service</h4>
-                      <p className="text-gray-600">Local delivery available</p>
-                      <p className="text-sm text-gray-500">Delivery details provided with order</p>
-                    </div>
+              <div className="border border-gold/25 bg-roast p-6">
+                <div className="flex items-center gap-4">
+                  <MapPin className="h-7 w-7 flex-none text-gold" />
+                  <div>
+                    <h3 className="mb-1 font-carte text-xl text-cream">Delivery Service</h3>
+                    <p className="text-latte">Free local delivery available</p>
+                    <p className="mt-1 text-sm text-latte/70">Delivery details provided with order</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
-              <Card className="border-2 border-peach/20 bg-peach/5">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4">
-                    <CreditCard className="h-8 w-8 text-peach" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800 mb-1">Payment Options</h4>
-                      <p className="text-gray-600">Cash on delivery or EF Tours donation</p>
-                      <p className="text-sm text-gray-500">Support my Europe trip directly!</p>
-                    </div>
+              <div className="border border-gold/25 bg-roast p-6">
+                <div className="flex items-center gap-4">
+                  <CreditCard className="h-7 w-7 flex-none text-gold" />
+                  <div>
+                    <h3 className="mb-1 font-carte text-xl text-cream">Payment Options</h3>
+                    <p className="text-latte">Cash on delivery, or pay at my booth</p>
+                    <p className="mt-1 text-sm text-latte/70">Find me at the Lake Oswego Farmers&rsquo; Market!</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
 
             {/* Hours & Info */}
-            <Card className="border-2 border-peach/20 bg-white">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-gray-800">
-                  <Clock className="h-5 w-5 text-peach" />
-                  Baking Schedule
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <div className="border border-gold/25 bg-roast p-6 md:p-8">
+              <div className="mb-5 flex items-center gap-3">
+                <Clock className="h-5 w-5 text-gold" />
+                <h3 className="font-carte text-xl text-cream">Baking Schedule</h3>
+              </div>
+              <div className="space-y-5 text-latte">
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">When I Bake:</h4>
-                  <div className="space-y-1 text-gray-600">
+                  <h4 className="eyebrow mb-2 text-[10px]">When I Bake</h4>
+                  <div className="space-y-1">
                     <p>
-                      <strong>Summer (June-August):</strong> Monday - Sunday, all day
+                      <strong className="text-cream">Summer (June-August):</strong> Monday - Sunday, all day
                     </p>
                     <p>
-                      <strong>School Year:</strong> Monday - Saturday, after homework
+                      <strong className="text-cream">School Year:</strong> Monday - Saturday, after homework
                     </p>
                     <p>
-                      <strong>Sundays:</strong> Taking a break
+                      <strong className="text-cream">Sundays:</strong> Taking a break
                     </p>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Response Time:</h4>
-                  <p className="text-gray-600">
-                    I usually respond within 24 hours! Sometimes sooner if I'm not in school.
-                  </p>
+                  <h4 className="eyebrow mb-2 text-[10px]">Response Time</h4>
+                  <p>I usually respond within 24 hours! Sometimes sooner if I&rsquo;m not in school.</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Order Lead Time:</h4>
-                  <p className="text-gray-600">
+                  <h4 className="eyebrow mb-2 text-[10px]">Order Lead Time</h4>
+                  <p>
                     Please order at least 3-4 days in advance for regular orders, and 1 week minimum for custom/large
                     orders.
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* FAQ */}
-            <Card className="border-2 border-pink/20 bg-white">
-              <CardHeader>
-                <CardTitle className="text-gray-800">Quick Questions?</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            <div className="border border-gold/25 bg-roast p-6 md:p-8">
+              <h3 className="mb-5 font-carte text-xl text-cream">Quick Questions?</h3>
+              <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800">Do you deliver?</h4>
-                  <p className="text-gray-600 text-sm">
-                    Yes! I offer local delivery for all orders. Delivery details will be arranged when you place your
-                    order.
+                  <h4 className="font-semibold text-cream">Do you deliver?</h4>
+                  <p className="text-sm text-latte">
+                    Yes! I offer free local delivery for all orders. Delivery details will be arranged when you place
+                    your order.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800">How far in advance should I order?</h4>
-                  <p className="text-gray-600 text-sm">
+                  <h4 className="font-semibold text-cream">How far in advance should I order?</h4>
+                  <p className="text-sm text-latte">
                     3-4 days for regular orders, 1 week for custom orders or large quantities.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800">Can you make cookies for allergies?</h4>
-                  <p className="text-gray-600 text-sm">
-                    Let me know about any allergies and I'll do my best to accommodate!
+                  <h4 className="font-semibold text-cream">Can you make cookies for allergies?</h4>
+                  <p className="text-sm text-latte">
+                    Let me know about any allergies and I&rsquo;ll do my best to accommodate!
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Cookie className="h-6 w-6 text-peach" />
-            <span className="text-xl font-semibold">Collina Cookies</span>
-          </div>
-          <p className="text-gray-400 mb-4">Handcrafted with love by Winnie Lanenga</p>
-          <p className="text-sm text-gray-500">Made with ❤️ and lots of flour</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

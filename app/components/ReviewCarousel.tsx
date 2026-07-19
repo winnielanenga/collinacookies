@@ -70,20 +70,22 @@ export default function ReviewCarousel() {
       onTouchStart={() => setIsPaused(true)}
       onTouchEnd={() => setIsPaused(false)}
     >
-      <Card className="border-2 border-peach/20 bg-white mb-8">
-        <CardContent className="p-8">
+      <Card className="mb-8 rounded-none border border-gold/30 bg-roast">
+        <CardContent className="p-8 md:p-10">
           <div className="transition-opacity duration-500">
-            <div className="flex justify-center mb-4 gap-1">
+            <div className="flex justify-center mb-5 gap-1">
               {Array.from({ length: currentTestimonial.rating }).map((_, i) => (
-                <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
+                <Star key={i} className="h-5 w-5 fill-current text-gold" />
               ))}
             </div>
-            <blockquote className="text-lg text-gray-700 italic mb-4 leading-relaxed min-h-[120px]">
-              "{currentTestimonial.text}"
+            <blockquote className="mb-5 min-h-[120px] font-carte text-xl italic leading-relaxed text-cream md:text-2xl">
+              &ldquo;{currentTestimonial.text}&rdquo;
             </blockquote>
             <div className="flex items-center justify-center gap-2">
-              <Heart className="h-5 w-5 text-peach" />
-              <span className="font-semibold text-gray-800">{currentTestimonial.name}</span>
+              <Heart className="h-4 w-4 text-gold" />
+              <span className="text-xs font-semibold uppercase tracking-[0.28em] text-latte">
+                {currentTestimonial.name}
+              </span>
             </div>
           </div>
         </CardContent>
@@ -92,30 +94,30 @@ export default function ReviewCarousel() {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white/80 hover:bg-white shadow-md"
+        className="absolute left-0 top-1/2 -translate-x-4 -translate-y-1/2 rounded-none border border-gold/40 bg-espresso text-gold hover:bg-gold hover:text-espresso"
         onClick={goToPrevious}
         aria-label="Previous testimonial"
       >
-        <ChevronLeft className="h-6 w-6 text-gray-700" />
+        <ChevronLeft className="h-6 w-6" />
       </Button>
 
       <Button
         variant="ghost"
         size="icon"
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white/80 hover:bg-white shadow-md"
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-none border border-gold/40 bg-espresso text-gold hover:bg-gold hover:text-espresso"
         onClick={goToNext}
         aria-label="Next testimonial"
       >
-        <ChevronRight className="h-6 w-6 text-gray-700" />
+        <ChevronRight className="h-6 w-6" />
       </Button>
 
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="mt-4 flex justify-center gap-2">
         {testimonials.map((_, index) => (
           <button
             key={index}
             onClick={() => goToIndex(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex ? "w-8 bg-peach" : "w-2 bg-gray-300 hover:bg-gray-400"
+              index === currentIndex ? "w-8 bg-gold" : "w-2 bg-latte/40 hover:bg-latte/70"
             }`}
             aria-label={`Go to testimonial ${index + 1}`}
           />

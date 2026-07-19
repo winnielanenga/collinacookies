@@ -8,6 +8,40 @@
   }
 }
 
+@layer components {
+  /* The Patisserie design system */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.3em] text-gold;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 border border-gold bg-gold px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-espresso transition-colors hover:border-cream hover:bg-cream;
+  }
+  .btn-gold-ghost {
+    @apply inline-flex items-center justify-center gap-2 border border-gold bg-transparent px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold/20;
+  }
+  .btn-gold-sm {
+    @apply inline-flex items-center justify-center gap-1.5 border border-gold/60 bg-transparent px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold transition-colors hover:bg-gold hover:text-espresso;
+  }
+  .gold-frame {
+    @apply relative border border-gold;
+  }
+  .gold-frame::before {
+    content: "";
+    @apply pointer-events-none absolute inset-[7px] border border-gold/35;
+  }
+  .dotted-leader {
+    @apply flex-1 -translate-y-1.5 border-b border-dotted border-latte/50;
+  }
+  .carte-tag {
+    @apply inline-block border border-gold/35 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-gold;
+  }
+}
+
+::selection {
+  background: #dfa94e;
+  color: #241a14;
+}
+
 @layer base {
   :root {
     --font-sans: var(--font-geist-sans);

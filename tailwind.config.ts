@@ -53,11 +53,21 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom pastel colors for Collina Cookies
-        cream: "#FDF6F0",
+        // The Patisserie palette for Collina Cookies
+        espresso: "#241A14",
+        roast: "#2F221A",
+        bark: "#3A2C22",
+        cream: "#F3E9DB",
+        latte: "#A98F7C",
+        gold: "#DFA94E",
+        // Legacy pastels (kept for the arcade easter egg + any stragglers)
         pink: "#F8BBD9",
         peach: "#FFCAB0",
         yellow: "#FFE5B4",
+      },
+      fontFamily: {
+        carte: ["Didot", "Bodoni 72", "var(--font-playfair)", "Georgia", "serif"],
+        body: ["Avenir Next", "Avenir", "var(--font-jost)", "Segoe UI", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -73,10 +83,20 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        rise: {
+          from: { opacity: "0", transform: "translateY(14px)" },
+          to: { opacity: "1", transform: "none" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 36s linear infinite",
+        rise: "rise 0.8s ease both",
       },
     },
   },

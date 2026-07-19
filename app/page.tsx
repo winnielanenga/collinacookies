@@ -1,285 +1,208 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Cookie, Heart, Star } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import Header from "./components/Header"
+import Footer from "./components/Footer"
 import CookieCard from "./components/CookieCard"
 import ReviewCarousel from "./components/ReviewCarousel"
 
 export default function Home() {
-  const classicCookies = [
+  const menuItems = [
     {
       id: 1,
-      name: "Loaded Chocolate Chip",
-      description: "Packed with melty chocolate chunks and baked to golden perfection",
-      price: 7.0,
-      category: "classic",
-      image: "/images/loaded-chocolate-chip.jpeg",
-      hasDough: true,
+      name: "Mr. Herron's Big Blueberry Muffins",
+      description:
+        "A jumbo, bakery-style muffin bursting with juicy blueberries under a golden, sugar-crusted top",
+      price: 5.0,
+      category: "premium",
+      tag: "Jumbo",
     },
     {
       id: 2,
-      name: "Salt & Straw Snickerdoodle",
-      description: "A cinnamon-sugar twist inspired by the famous ice cream shop",
-      price: 7.0,
-      category: "classic",
-      image: "/images/salt-straw-snickerdoodles.jpeg",
-      hasDough: true,
+      name: "Brown Butter Chocolate Chunk",
+      description:
+        "Nutty browned butter, pools of melty chocolate chunks, and a whisper of sea salt. Our signature",
+      price: 5.0,
+      category: "premium",
+      tag: "Signature",
     },
     {
       id: 3,
-      name: "Key Lime Snowballs",
-      description: "Buttery shortbread with a zesty lime kick and a powdered sugar finish",
-      price: 7.0,
-      category: "classic",
-      image: "/images/key-lime-snowballs-new.jpeg",
-      hasDough: true,
-    },
-  ]
-
-  const seasonalCookies = [
-    {
-      id: 4,
-      name: "Sugar Cookie Dough",
-      description:
-        "Our sugar cookie dough comes ready to roll, cut, and bake into perfect festive shapes. Homemade flavor without the hassle. Icing recipe included!",
-      price: 7.0,
-      category: "seasonal",
-      image: "/images/sugar-cookie-dough.png",
-    },
-  ]
-
-  const doughOptions = [
-    {
-      id: 11,
-      name: "Loaded Chocolate Chip Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
-    },
-    {
-      id: 12,
-      name: "Salt & Straw Snickerdoodle Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
-    },
-    {
-      id: 13,
-      name: "Key Lime Snowballs Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
+      name: "Salt & Straw Snickerdoodles",
+      description: "A jumbo cinnamon-sugar twist inspired by the famous Portland ice cream shop",
+      price: 5.0,
+      category: "premium",
+      tag: "Fan Favorite",
     },
   ]
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-espresso">
       <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-              Handcrafted with <span className="text-pink">Love</span>
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Welcome to Collina Cookies! I'm Winnie, and at just 13 years old, I'm following my passion for baking that
-              my dad inspired in me. Every cookie is made with care and the love of baking he taught me.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/cart">
-                <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                  <Heart className="mr-2 h-5 w-5" />
-                  Start Shopping
-                </Button>
-              </Link>
-              <Link href="/story">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-pink text-pink hover:bg-pink hover:text-white bg-transparent"
-                >
-                  Read My Story
-                </Button>
-              </Link>
-            </div>
-          </div>
+      <section className="flex min-h-[86vh] flex-col items-center justify-center px-4 py-24 text-center">
+        <p className="eyebrow animate-rise motion-reduce:animate-none">Lake Oswego · Oregon</p>
+        <h1 className="mt-7 animate-rise font-carte text-7xl font-normal leading-[0.95] text-cream [animation-delay:150ms] motion-reduce:animate-none md:text-9xl">
+          Collina
+        </h1>
+        <p className="mt-4 animate-rise pl-[0.58em] text-sm uppercase tracking-[0.58em] text-latte [animation-delay:300ms] motion-reduce:animate-none">
+          Cookies &amp; Bakes
+        </p>
+        <p className="mx-auto mt-9 max-w-2xl animate-rise text-lg leading-relaxed text-latte [animation-delay:450ms] motion-reduce:animate-none">
+          Jumbo, premium bakes from a very small bakery — browned butter, wild blueberries, and cinnamon sugar, baked
+          by <strong className="font-semibold text-cream">Winnie</strong> and sold fresh at the{" "}
+          <strong className="font-semibold text-cream">Lake Oswego Farmers&rsquo; Market</strong>.
+        </p>
+        <div className="mt-11 flex animate-rise flex-col justify-center gap-4 [animation-delay:600ms] motion-reduce:animate-none sm:flex-row">
+          <a href="#menu" className="btn-gold">
+            View the Carte
+          </a>
+          <Link href="/cart" className="btn-gold-ghost">
+            Order for Delivery
+          </Link>
         </div>
       </section>
 
-      {/* Classic Cookies Section */}
-      <section id="classics" className="py-16 px-4 bg-white/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <Badge className="bg-yellow/20 text-yellow-800 mb-4">Always Available</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-4">Classic Flavors</h3>
-            <p className="text-gray-600 max-w-2xl mx-auto">My three signature cookies that started it all</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {classicCookies.map((cookie) => (
-              <CookieCard key={cookie.id} cookie={cookie} doughOptions={doughOptions} variant="classic" />
-            ))}
-          </div>
+      {/* Gold Ticker */}
+      <div className="overflow-hidden whitespace-nowrap bg-gold text-espresso" aria-hidden="true">
+        <div className="inline-block animate-marquee py-3 text-xs font-semibold uppercase tracking-[0.26em] motion-reduce:animate-none">
+          <span>
+            At the Lake Oswego Farmers&rsquo; Market Aug 1 &amp; 29&nbsp;&nbsp;·&nbsp;&nbsp;Jumbo Bakes, $5
+            Each&nbsp;&nbsp;·&nbsp;&nbsp;Any Half Dozen, $25&nbsp;&nbsp;·&nbsp;&nbsp;Free Local
+            Delivery&nbsp;&nbsp;·&nbsp;&nbsp;
+          </span>
+          <span>
+            At the Lake Oswego Farmers&rsquo; Market Aug 1 &amp; 29&nbsp;&nbsp;·&nbsp;&nbsp;Jumbo Bakes, $5
+            Each&nbsp;&nbsp;·&nbsp;&nbsp;Any Half Dozen, $25&nbsp;&nbsp;·&nbsp;&nbsp;Free Local
+            Delivery&nbsp;&nbsp;·&nbsp;&nbsp;
+          </span>
         </div>
-      </section>
+      </div>
 
-      {/* Seasonal Cookies Section */}
-      <section id="seasonal" className="py-16 px-4 bg-white/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <Badge className="bg-pink/20 text-pink-800 mb-4">Limited Time</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-4">Seasonal Specialties</h3>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Festive holiday flavors perfect for the season - create your own decorated masterpieces!
+      {/* The Carte */}
+      <section id="menu" className="px-4 py-24 md:py-28">
+        <div className="container mx-auto max-w-4xl">
+          <div className="mb-16 text-center">
+            <p className="eyebrow mb-4">The Carte</p>
+            <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Three Bakes, Done Properly</h2>
+            <p className="mt-4 text-latte">
+              Every bake is one big, jumbo-sized treat — <b className="font-semibold text-gold">$5 apiece</b>,
+              whichever you choose.
             </p>
           </div>
-          <div className="grid md:grid-cols-1 gap-8 max-w-md mx-auto">
-            {seasonalCookies.map((cookie) => (
-              <CookieCard key={cookie.id} cookie={cookie} variant="seasonal" />
+
+          <div className="mx-auto flex max-w-2xl flex-col gap-12">
+            {menuItems.map((item) => (
+              <CookieCard key={item.id} cookie={item} />
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Customer Testimonial Preview */}
-      <section className="py-16 px-4 bg-pink/5">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <Badge className="bg-pink/20 text-pink-800 mb-4">Customer Love</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-8">What People Are Saying</h3>
-
-            <ReviewCarousel />
-
-            <Link href="/testimonials">
-              <Button size="lg" className="bg-pink hover:bg-pink/90 text-white">
-                <Star className="mr-2 h-5 w-5" />
-                Read More & Share Your Review
-              </Button>
+          {/* Half Dozen Deal */}
+          <div className="gold-frame mx-auto mt-20 max-w-2xl p-10 text-center md:p-12">
+            <p className="eyebrow mb-3">Mix &amp; Match</p>
+            <h3 className="font-carte text-3xl font-normal text-cream">The Half Dozen</h3>
+            <p className="my-2 font-carte text-6xl text-gold">$25</p>
+            <p className="mx-auto max-w-md text-latte">
+              Any six bakes, in any combination — muffins, chocolate chunk, snickerdoodles. That&rsquo;s $25 instead of
+              $30: one of the six is on the house. Applied automatically in your cart.
+            </p>
+            <Link href="/cart" className="btn-gold mt-8">
+              Build Your Box
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Europe Trip Progress Section */}
-      <section className="py-16 px-4 bg-peach/5">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <Badge className="bg-peach/20 text-peach-800 mb-4">My Dream Journey</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-6">Europe Trip Progress</h3>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Every dozen cookies sold brings me closer to my dream of exploring Europe in summer 2026! See how close I
-              am to my goal and help me get there.
+      {/* Farmers Market Section */}
+      <section id="market" className="bg-roast px-4 py-24 md:py-28">
+        <div className="container mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2 md:gap-16">
+          <div>
+            <p className="eyebrow mb-4">Two Market Days Left</p>
+            <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Find the Booth</h2>
+            <p className="mt-5 leading-relaxed text-latte">
+              Collina Cookies has grown from a doorstep-delivery cookie company into a real booth at the Lake Oswego
+              Farmers&rsquo; Market — on select dates. Everything on the table is baked the morning you buy it.
             </p>
-
-            <div className="relative mb-8 isolate">
-              <Card className="border-2 border-peach/20 bg-white">
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2 text-sm font-semibold">
-                        <span className="text-gray-700">Fundraising Goal</span>
-                        <span className="text-peach">100%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
-                        <div
-                          className="bg-gradient-to-r from-peach to-pink h-full rounded-full transition-all duration-500"
-                          style={{ width: "100%" }}
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                      <div className="bg-peach/10 rounded-lg p-4">
-                        <p className="text-3xl font-bold text-peach mb-1">100%</p>
-                        <p className="text-sm text-gray-600">Goal Reached</p>
-                      </div>
-                      <div className="bg-pink/10 rounded-lg p-4">
-                        <p className="text-3xl font-bold text-pink mb-1">2026</p>
-                        <p className="text-sm text-gray-600">Trip Year</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                <div className="transform rotate-[-15deg]">
-                  <div className="border-8 border-green-600 rounded-xl px-12 py-6 bg-white/95 shadow-lg">
-                    <p className="text-6xl font-black text-green-600 tracking-wider">COMPLETED</p>
-                  </div>
-                </div>
+            <div className="my-8 flex max-w-sm flex-col gap-4">
+              <div className="flex items-baseline gap-3">
+                <span className="text-[11.5px] font-semibold uppercase tracking-[0.24em] text-latte">Saturday</span>
+                <span className="dotted-leader" />
+                <span className="font-carte text-2xl text-gold md:text-[27px]">August 1</span>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <span className="text-[11.5px] font-semibold uppercase tracking-[0.24em] text-latte">Saturday</span>
+                <span className="dotted-leader" />
+                <span className="font-carte text-2xl text-gold md:text-[27px]">August 29</span>
               </div>
             </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://account.eftours.com/donations/YlnEpn" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                  <Heart className="mr-2 h-5 w-5" />
-                  View My Progress Tracker
-                </Button>
-              </a>
-              <Link href="/cart">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-                >
-                  <Cookie className="mr-2 h-5 w-5" />
-                  Buy Cookies & Help My Dream
-                </Button>
-              </Link>
-            </div>
+            <p className="text-sm italic text-latte">
+              If more booth space opens up, more dates will follow — check back here.
+            </p>
+            <p className="mt-5 leading-relaxed text-latte">
+              Can&rsquo;t make a market day? Order online — local delivery is always free.
+            </p>
           </div>
+          <figure className="m-0 w-full max-w-[420px] justify-self-center border border-gold/30 bg-espresso p-3 pb-4 md:justify-self-end">
+            <div className="relative aspect-[68/75] w-full">
+              <Image
+                src="/images/winnie-market-booth.jpeg"
+                alt="Winnie at the Collina Cookies booth under the Young Entrepreneur tent at the Lake Oswego Farmers' Market"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="mt-3.5 text-center text-[11px] uppercase tracking-[0.26em] text-latte">
+              The Collina booth · Lake Oswego Farmers&rsquo; Market
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      {/* Customer Reviews */}
+      <section className="px-4 py-24 text-center md:py-28">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-4">Customer Love</p>
+          <h2 className="mb-12 font-carte text-4xl font-normal text-cream md:text-5xl">What People Are Saying</h2>
+
+          <ReviewCarousel />
+
+          <Link href="/testimonials" className="btn-gold-ghost mt-8">
+            Read More &amp; Share Your Review
+          </Link>
         </div>
       </section>
 
       {/* Custom Bakes Section */}
-      <section id="custom" className="py-16 px-4 bg-yellow/10">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <Badge className="bg-yellow/30 text-yellow-800 mb-4">Made to Order</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-6">Custom Bakes</h3>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Have a special event or unique flavor in mind? Let's create something magical together! From birthday
-              parties to school events, I'll craft the perfect baked goods for your occasion.
-            </p>
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-yellow/20">
-              <h4 className="text-2xl font-semibold text-gray-800 mb-4">Perfect for:</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-gray-600">
-                <div>🎂 Birthdays</div>
-                <div>🏢 Corporate Events</div>
-                <div>🎉 Parties</div>
-                <div>🎁 Gifts</div>
-                <div>🏠 Family Gatherings</div>
-                <div>🎈 Celebrations</div>
-                <div>🍪 Bake Sales</div>
-                <div>❤️ Special Occasions</div>
-              </div>
+      <section id="custom" className="bg-roast px-4 py-24 text-center md:py-28">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-4">Made to Order</p>
+          <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Custom Bakes</h2>
+          <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-latte">
+            Have a special event or unique flavor in mind? Let&rsquo;s create something magical together — from
+            birthday parties to school events, I&rsquo;ll craft the perfect baked goods for your occasion.
+          </p>
+          <div className="gold-frame mx-auto mt-10 max-w-2xl bg-espresso p-10">
+            <h3 className="font-carte text-2xl font-normal text-cream">Perfect For</h3>
+            <div className="mt-6 grid grid-cols-2 gap-4 text-latte md:grid-cols-4">
+              <div>🎂 Birthdays</div>
+              <div>🏢 Corporate Events</div>
+              <div>🎉 Parties</div>
+              <div>🎁 Gifts</div>
+              <div>🏠 Family Gatherings</div>
+              <div>🎈 Celebrations</div>
+              <div>🍪 Bake Sales</div>
+              <div>❤️ Special Occasions</div>
             </div>
-            <Link href="/contact">
-              <Button size="lg" className="mt-8 bg-yellow hover:bg-yellow/90 text-gray-800">
-                Request Custom Order
-              </Button>
-            </Link>
           </div>
+          <Link href="/contact" className="btn-gold mt-10">
+            Request a Custom Bake
+          </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Cookie className="h-6 w-6 text-peach" />
-            <span className="text-xl font-semibold">Collina Cookies</span>
-          </div>
-          <p className="text-gray-400 mb-4">Handcrafted with love by Winnie Lanenga</p>
-          <p className="text-sm text-gray-500">Made with ❤️ and lots of flour</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

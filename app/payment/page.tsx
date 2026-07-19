@@ -1,197 +1,117 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Cookie, DollarSign, Smartphone, HandCoins } from "lucide-react"
+import { Cookie, DollarSign, HandCoins, Tent } from "lucide-react"
 import Link from "next/link"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 export default function PaymentPage() {
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-peach/20 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Cookie className="h-8 w-8 text-peach" />
-              <h1 className="text-2xl font-bold text-gray-800">Collina Cookies</h1>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-gray-700 hover:text-peach transition-colors">
-                Home
-              </Link>
-              <Link href="/story" className="text-gray-700 hover:text-peach transition-colors">
-                My Story
-              </Link>
-              <Link href="/contact" className="text-gray-700 hover:text-peach transition-colors">
-                Contact + FAQ
-              </Link>
-              <Link href="/cart" className="text-gray-700 hover:text-peach transition-colors">
-                Cart
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-espresso">
+      <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-              Easy <span className="text-pink">Payment</span>
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              I've made paying for your cookies as simple as possible! Choose the method that works best for you.
-            </p>
-          </div>
+      <section className="px-4 py-24 text-center">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-5">Settling the Bill</p>
+          <h1 className="font-carte text-5xl font-normal text-cream md:text-6xl">Easy Payment</h1>
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-latte">
+            I&rsquo;ve made paying for your bakes as simple as possible! Choose the method that works best for you.
+          </p>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-16">
-        <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 pb-24">
+        <div className="mx-auto max-w-4xl">
           {/* Payment Methods */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="border-2 border-peach/20 bg-peach/5">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-xl text-gray-800">
-                  <HandCoins className="h-6 w-6 text-peach" />
-                  Cash on Delivery
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  The easiest way! Pay with cash when I deliver your cookies. I'll have change if you need it.
+          <div className="mb-12 grid gap-8 md:grid-cols-2">
+            <div className="border border-gold/25 bg-roast p-8">
+              <div className="mb-4 flex items-center gap-3">
+                <HandCoins className="h-6 w-6 text-gold" />
+                <h2 className="font-carte text-2xl font-normal text-cream">Cash on Delivery</h2>
+              </div>
+              <p className="text-latte">
+                The easiest way! Pay with cash when I deliver your bakes. I&rsquo;ll have change if you need it.
+              </p>
+              <div className="mt-5 border border-gold/20 bg-espresso p-4">
+                <p className="text-sm text-latte">
+                  <strong className="text-cream">Perfect for:</strong> Anyone who prefers cash transactions
                 </p>
-                <div className="bg-white rounded-lg p-4 border border-peach/20">
-                  <p className="text-sm text-gray-600">
-                    <strong>Perfect for:</strong> Anyone who prefers cash transactions
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="border-2 border-pink/20 bg-pink/5">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-xl text-gray-800">
-                  <Smartphone className="h-6 w-6 text-pink" />
-                  Europe Trip Donation
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  Support my Europe trip directly! Pay for your cookies through my official EF Tours donation page.
+            <div className="border border-gold/25 bg-roast p-8">
+              <div className="mb-4 flex items-center gap-3">
+                <Tent className="h-6 w-6 text-gold" />
+                <h2 className="font-carte text-2xl font-normal text-cream">Pay at the Market</h2>
+              </div>
+              <p className="text-latte">
+                Visiting my booth at the Lake Oswego Farmers&rsquo; Market? Pay right there when you pick up your
+                treats — no pre-ordering needed!
+              </p>
+              <div className="mt-5 border border-gold/20 bg-espresso p-4">
+                <p className="text-sm text-latte">
+                  <strong className="text-cream">Perfect for:</strong> Market-day shoppers who want their bakes fresh
+                  from the booth
                 </p>
-                <div className="bg-white rounded-lg p-4 border border-pink/20">
-                  <p className="text-sm text-gray-600 mb-2">
-                    <strong>Donation Link:</strong>
-                  </p>
-                  <a
-                    href="https://account.eftours.com/donations/YlnEpn"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-pink hover:text-pink/80 underline text-sm break-all"
-                  >
-                    account.eftours.com/donations/YlnEpn
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* How It Works */}
-          <Card className="border-2 border-yellow/20 bg-white mb-12">
-            <CardHeader>
-              <CardTitle className="text-2xl text-gray-800 text-center">How Payment Works</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-6 text-center">
-                <div>
-                  <div className="w-12 h-12 bg-peach/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-peach font-bold">1</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Place Your Order</h4>
-                  <p className="text-gray-600 text-sm">
-                    Email me your order and we'll confirm the details and total cost.
-                  </p>
+          <div className="mb-12 border border-gold/25 bg-roast p-8 md:p-10">
+            <h2 className="mb-10 text-center font-carte text-3xl font-normal text-cream">How Payment Works</h2>
+            <div className="grid gap-8 text-center md:grid-cols-3">
+              <div>
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-gold/40 font-carte text-xl text-gold">
+                  1
                 </div>
-                <div>
-                  <div className="w-12 h-12 bg-pink/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-pink font-bold">2</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Choose Payment</h4>
-                  <p className="text-gray-600 text-sm">
-                    Let me know if you'd prefer cash on delivery or to donate through my EF Tours page.
-                  </p>
-                </div>
-                <div>
-                  <div className="w-12 h-12 bg-yellow/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-yellow-600 font-bold">3</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Enjoy Your Cookies!</h4>
-                  <p className="text-gray-600 text-sm">
-                    I'll deliver your fresh cookies and collect payment (if cash) or confirm your donation.
-                  </p>
-                </div>
+                <h3 className="mb-2 font-semibold text-cream">Place Your Order</h3>
+                <p className="text-sm text-latte">
+                  Email me your order and we&rsquo;ll confirm the details and total cost.
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div>
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-gold/40 font-carte text-xl text-gold">
+                  2
+                </div>
+                <h3 className="mb-2 font-semibold text-cream">Choose Payment</h3>
+                <p className="text-sm text-latte">
+                  Pay with cash on delivery, or stop by my farmers&rsquo; market booth and pay in person.
+                </p>
+              </div>
+              <div>
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-gold/40 font-carte text-xl text-gold">
+                  3
+                </div>
+                <h3 className="mb-2 font-semibold text-cream">Enjoy Your Bakes!</h3>
+                <p className="text-sm text-latte">
+                  I&rsquo;ll deliver your fresh bakes and collect payment, or hand them to you right at the booth.
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Pricing Reminder */}
-          <Card className="border-2 border-peach/20 bg-peach/5 text-center">
-            <CardContent className="p-8">
-              <DollarSign className="h-12 w-12 text-peach mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Simple Pricing</h3>
-              <p className="text-lg text-gray-600 mb-6">
-                Every dozen cookies is just $7, no matter which flavor you choose. Free local delivery included!
-              </p>
-              <div className="mb-6 p-4 bg-white rounded-lg border border-peach/20">
-                <p className="text-gray-600 text-sm mb-2">
-                  <strong>🎯 Track My Progress:</strong>
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Want to see how close I am to my Europe 2026 goal?
-                  <a
-                    href="https://account.eftours.com/donations/YlnEpn"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-peach hover:text-peach/80 underline ml-1"
-                  >
-                    Check my official progress tracker!
-                  </a>
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/">
-                  <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                    <Cookie className="mr-2 h-5 w-5" />
-                    Start Shopping
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="border-pink text-pink hover:bg-pink hover:text-white bg-transparent"
-                  >
-                    Ask Questions
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="gold-frame bg-roast p-10 text-center md:p-12">
+            <DollarSign className="mx-auto mb-4 h-10 w-10 text-gold" />
+            <h2 className="font-carte text-3xl font-normal text-cream">Simple Pricing</h2>
+            <p className="mx-auto mt-5 max-w-xl text-lg text-latte">
+              Every jumbo, premium bake is <strong className="text-gold">$5 each</strong> — or mix and match any half
+              dozen for <strong className="text-gold">$25</strong>. Free local delivery included!
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+              <Link href="/#menu" className="btn-gold">
+                <Cookie className="h-4 w-4" />
+                View the Carte
+              </Link>
+              <Link href="/contact" className="btn-gold-ghost">
+                Ask Questions
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 px-4">
-        <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Cookie className="h-6 w-6 text-peach" />
-            <span className="text-xl font-semibold">Collina Cookies</span>
-          </div>
-          <p className="text-gray-400 mb-4">Handcrafted with love by Winnie Lanenga</p>
-          <p className="text-sm text-gray-500">Made with ❤️ and lots of flour</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
