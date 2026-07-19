@@ -13,16 +13,14 @@ interface CookieData {
   price: number
   category: string
   image?: string
-  hasDough?: boolean
 }
 
 interface CookieCardProps {
   cookie: CookieData
-  doughOptions?: CookieData[]
   variant?: "classic" | "seasonal"
 }
 
-export default function CookieCard({ cookie, doughOptions = [], variant = "classic" }: CookieCardProps) {
+export default function CookieCard({ cookie, variant = "classic" }: CookieCardProps) {
   const { addToCart } = useCart()
 
   const borderColor =
@@ -55,25 +53,10 @@ export default function CookieCard({ cookie, doughOptions = [], variant = "class
       </CardHeader>
       <CardContent className="text-center space-y-3">
         <CardDescription className="text-gray-600 mb-4">{cookie.description}</CardDescription>
-        <div className="space-y-2">
-          <Button onClick={() => addToCart(cookie)} className={`w-full ${buttonColor} text-white`}>
-            <Plus className="h-4 w-4 mr-2" />
-            {variant === "classic" ? "Add Baked Cookies" : "Add to Cart"}
-          </Button>
-          {cookie.hasDough && (
-            <Button
-              onClick={() => {
-                const doughVersion = doughOptions.find((d) => d.name.includes(cookie.name.split(" ")[0]))
-                if (doughVersion) addToCart(doughVersion)
-              }}
-              variant="outline"
-              className="w-full border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Cookie Dough
-            </Button>
-          )}
-        </div>
+        <Button onClick={() => addToCart(cookie)} className={`w-full ${buttonColor} text-white`}>
+          <Plus className="h-4 w-4 mr-2" />
+          {variant === "classic" ? "Add to Cart" : "Add to Cart"}
+        </Button>
       </CardContent>
     </Card>
   )

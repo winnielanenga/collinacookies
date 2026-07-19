@@ -12,54 +12,27 @@ export default function Home() {
   const classicCookies = [
     {
       id: 1,
-      name: "Loaded Chocolate Chip",
-      description: "Packed with melty chocolate chunks and baked to golden perfection",
-      price: 7.0,
+      name: "Mr Herron's Big Blueberry Muffins",
+      description: "A lemon blueberry muffin with a crunchy sugar topping",
+      price: 11.0,
       category: "classic",
-      image: "/images/loaded-chocolate-chip.jpeg",
-      hasDough: true,
+      image: "/images/blueberry-muffins.png",
     },
     {
       id: 2,
-      name: "Salt & Straw Snickerdoodle",
-      description: "A cinnamon-sugar twist inspired by the famous ice cream shop",
-      price: 7.0,
+      name: "Brown Butter Chocolate Chunk Cookies",
+      description: "Six tablespoons of brown butter chocolate goodness",
+      price: 11.0,
       category: "classic",
-      image: "/images/salt-straw-snickerdoodles.jpeg",
-      hasDough: true,
+      image: "/images/brown-butter-chocolate-chunk.png",
     },
     {
       id: 3,
-      name: "Key Lime Snowballs",
-      description: "Buttery shortbread with a zesty lime kick and a powdered sugar finish",
-      price: 7.0,
+      name: "Salt & Straw Snickerdoodle",
+      description: "A cinnamon-sugar twist inspired by the famous ice cream shop",
+      price: 11.0,
       category: "classic",
-      image: "/images/key-lime-snowballs-new.jpeg",
-      hasDough: true,
-    },
-  ]
-
-  const doughOptions = [
-    {
-      id: 11,
-      name: "Loaded Chocolate Chip Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
-    },
-    {
-      id: 12,
-      name: "Salt & Straw Snickerdoodle Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
-    },
-    {
-      id: 13,
-      name: "Key Lime Snowballs Dough",
-      description: "Ready-to-bake dough - enjoy fresh cookies whenever you want!",
-      price: 7.0,
-      category: "dough",
+      image: "/images/salt-straw-snickerdoodles.jpeg",
     },
   ]
 
@@ -109,7 +82,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {classicCookies.map((cookie) => (
-              <CookieCard key={cookie.id} cookie={cookie} doughOptions={doughOptions} variant="classic" />
+              <CookieCard key={cookie.id} cookie={cookie} variant="classic" />
             ))}
           </div>
         </div>
