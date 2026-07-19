@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Cookie, Heart, Star } from "lucide-react"
 import Link from "next/link"
@@ -37,18 +36,6 @@ export default function Home() {
       category: "classic",
       image: "/images/key-lime-snowballs-new.jpeg",
       hasDough: true,
-    },
-  ]
-
-  const seasonalCookies = [
-    {
-      id: 4,
-      name: "Sugar Cookie Dough",
-      description:
-        "Our sugar cookie dough comes ready to roll, cut, and bake into perfect festive shapes. Homemade flavor without the hassle. Icing recipe included!",
-      price: 7.0,
-      category: "seasonal",
-      image: "/images/sugar-cookie-dough.png",
     },
   ]
 
@@ -128,24 +115,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Seasonal Cookies Section */}
-      <section id="seasonal" className="py-16 px-4 bg-white/50">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <Badge className="bg-pink/20 text-pink-800 mb-4">Limited Time</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-4">Seasonal Specialties</h3>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Festive holiday flavors perfect for the season - create your own decorated masterpieces!
-            </p>
-          </div>
-          <div className="grid md:grid-cols-1 gap-8 max-w-md mx-auto">
-            {seasonalCookies.map((cookie) => (
-              <CookieCard key={cookie.id} cookie={cookie} variant="seasonal" />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Customer Testimonial Preview */}
       <section className="py-16 px-4 bg-pink/5">
         <div className="container mx-auto text-center">
@@ -161,78 +130,6 @@ export default function Home() {
                 Read More & Share Your Review
               </Button>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Europe Trip Progress Section */}
-      <section className="py-16 px-4 bg-peach/5">
-        <div className="container mx-auto text-center">
-          <div className="max-w-3xl mx-auto">
-            <Badge className="bg-peach/20 text-peach-800 mb-4">My Dream Journey</Badge>
-            <h3 className="text-4xl font-bold text-gray-800 mb-6">Europe Trip Progress</h3>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Every dozen cookies sold brings me closer to my dream of exploring Europe in summer 2026! See how close I
-              am to my goal and help me get there.
-            </p>
-
-            <div className="relative mb-8 isolate">
-              <Card className="border-2 border-peach/20 bg-white">
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2 text-sm font-semibold">
-                        <span className="text-gray-700">Fundraising Goal</span>
-                        <span className="text-peach">100%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
-                        <div
-                          className="bg-gradient-to-r from-peach to-pink h-full rounded-full transition-all duration-500"
-                          style={{ width: "100%" }}
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 pt-4">
-                      <div className="bg-peach/10 rounded-lg p-4">
-                        <p className="text-3xl font-bold text-peach mb-1">100%</p>
-                        <p className="text-sm text-gray-600">Goal Reached</p>
-                      </div>
-                      <div className="bg-pink/10 rounded-lg p-4">
-                        <p className="text-3xl font-bold text-pink mb-1">2026</p>
-                        <p className="text-sm text-gray-600">Trip Year</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                <div className="transform rotate-[-15deg]">
-                  <div className="border-8 border-green-600 rounded-xl px-12 py-6 bg-white/95 shadow-lg">
-                    <p className="text-6xl font-black text-green-600 tracking-wider">COMPLETED</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://account.eftours.com/donations/YlnEpn" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-peach hover:bg-peach/90 text-white">
-                  <Heart className="mr-2 h-5 w-5" />
-                  View My Progress Tracker
-                </Button>
-              </a>
-              <Link href="/cart">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-peach text-peach hover:bg-peach hover:text-white bg-transparent"
-                >
-                  <Cookie className="mr-2 h-5 w-5" />
-                  Buy Cookies & Help My Dream
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       </section>
