@@ -9,10 +9,12 @@ import { useState } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import CookieMonsterGame from "../components/CookieMonsterGame"
+import EmailComposeOptions from "../components/EmailComposeOptions"
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart()
   const [emailSent, setEmailSent] = useState(false)
+  const [orderBody, setOrderBody] = useState("")
   const [showGame, setShowGame] = useState(false)
   const [promoCode, setPromoCode] = useState("")
   const [appliedPromo, setAppliedPromo] = useState<{
@@ -97,11 +99,8 @@ export default function CartPage() {
 
     message += `\n\nI can pay with cash or credit card on delivery. Please let me know about delivery details. Thank you!`
 
-    // Create mailto link
-    const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=Cookie Order&body=${encodeURIComponent(message)}`
-    window.location.href = mailtoLink
-
-    // Show the "email sent" confirmation instead of clearing cart immediately
+    // Show the send-options panel; the customer picks their email app there
+    setOrderBody(message)
     setEmailSent(true)
   }
 
@@ -109,6 +108,7 @@ export default function CartPage() {
     // Show the easter egg game first, then clear cart
     setEmailSent(false)
     setShowGame(true)
+    setOrderBody("")
     clearCart()
     setAppliedPromo(null)
     setPromoCode("")
@@ -153,13 +153,15 @@ export default function CartPage() {
               <Mail className="mx-auto mb-5 h-14 w-14 text-gold" />
               <h3 className="font-carte text-3xl font-normal text-cream">Your Order Is Ready to Send</h3>
               <p className="mt-5 text-latte">
-                I&rsquo;ve opened your email client with your order ready to go. Please send that email, then come back
-                here for a special surprise!
+                Pick whichever way you like to email — send your order, then come back here for a special surprise!
               </p>
+              <div className="mx-auto mt-7 max-w-md">
+                <EmailComposeOptions subject="Cookie Order" body={orderBody} />
+              </div>
               <div className="mx-auto mt-7 max-w-md border border-gold/25 bg-espresso p-5 text-left">
                 <p className="eyebrow mb-3 text-[10px]">Next Steps</p>
                 <ol className="space-y-1.5 text-sm text-latte">
-                  <li>1. Check your email client (it should have opened)</li>
+                  <li>1. Open your email with one of the buttons above</li>
                   <li>2. Review your order details</li>
                   <li>3. Click &ldquo;Send&rdquo; in your email</li>
                   <li>4. Come back here and click the button below!</li>
@@ -360,7 +362,8 @@ export default function CartPage() {
                       </p>
                     ) : (
                       <p className="text-center text-xs text-latte">
-                        Clicking &ldquo;Place Order&rdquo; will open your email to send me your order details!
+                        Clicking &ldquo;Place Order&rdquo; prepares your order email — works with Apple Mail, Gmail,
+                        or plain copy &amp; paste.
                       </p>
                     )}
 

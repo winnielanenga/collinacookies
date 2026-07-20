@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Mail, MapPin, MessageCircle, Clock, Send, CreditCard } from "lucide-react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import EmailComposeOptions from "../components/EmailComposeOptions"
 
 const fieldStyles = "rounded-none border-latte/40 bg-espresso text-cream placeholder:text-latte/60"
 
@@ -21,6 +22,7 @@ export default function ContactPage() {
     message: "",
     preferText: false,
   })
+  const [composed, setComposed] = useState<{ subject: string; body: string } | null>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,11 +40,7 @@ ${formData.message}
 
 Please respond to this inquiry!`
 
-    const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    window.location.href = mailtoLink
-
-    alert("Thank you for your message! I'll get back to you soon!")
-    setFormData({ name: "", email: "", phone: "", orderType: "", message: "", preferText: false })
+    setComposed({ subject, body })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -181,6 +179,15 @@ Please respond to this inquiry!`
                 Send Message
               </button>
             </form>
+
+            {composed && (
+              <div className="mt-8 border-t border-gold/25 pt-7">
+                <p className="mb-4 text-center text-sm text-latte">
+                  Your message is ready — pick how you&rsquo;d like to send it:
+                </p>
+                <EmailComposeOptions subject={composed.subject} body={composed.body} />
+              </div>
+            )}
           </div>
 
           {/* Contact Info & Details */}

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Cookie, Star, Heart, Send, MessageCircle } from "lucide-react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import EmailComposeOptions from "../components/EmailComposeOptions"
 
 const fieldStyles = "rounded-none border-latte/40 bg-espresso text-cream placeholder:text-latte/60"
 
@@ -37,6 +38,7 @@ export default function TestimonialsPage() {
     rating: "5",
     testimonial: "",
   })
+  const [composed, setComposed] = useState<{ subject: string; body: string } | null>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,11 +54,7 @@ Testimonial:
 
 Please add this to the website testimonials!`
 
-    const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    window.location.href = mailtoLink
-
-    alert("Thank you for your testimonial! I'll add it to the website soon!")
-    setFormData({ name: "", email: "", rating: "5", testimonial: "" })
+    setComposed({ subject, body })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -191,6 +189,15 @@ Please add this to the website testimonials!`
                   Submit Testimonial
                 </button>
               </form>
+
+              {composed && (
+                <div className="mt-8 border-t border-gold/25 pt-7">
+                  <p className="mb-4 text-center text-sm text-latte">
+                    Your testimonial is ready — pick how you&rsquo;d like to send it:
+                  </p>
+                  <EmailComposeOptions subject={composed.subject} body={composed.body} />
+                </div>
+              )}
             </div>
 
             {/* Why Testimonials Matter */}
