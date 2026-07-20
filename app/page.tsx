@@ -87,7 +87,7 @@ export default function Home() {
         <div className="container mx-auto max-w-4xl">
           <div className="mb-16 text-center">
             <p className="eyebrow mb-4">The Carte</p>
-            <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Three Bakes, Done Properly</h2>
+            <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Small Menu, Big Bakes</h2>
             <p className="mt-4 text-latte">
               Every bake is one big, jumbo-sized treat — <b className="font-semibold text-gold">$5 apiece</b>,
               whichever you choose.
