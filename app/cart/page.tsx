@@ -95,7 +95,7 @@ export default function CartPage() {
       message += `\n\nPhone: ${phoneNumber}${preferText ? " (Prefers text messages)" : ""}`
     }
 
-    message += `\n\nI can pay with cash on delivery. Please let me know about delivery details. Thank you!`
+    message += `\n\nI can pay with cash or credit card on delivery. Please let me know about delivery details. Thank you!`
 
     // Create mailto link
     const mailtoLink = `mailto:winnie.lanenga@gmail.com?subject=Cookie Order&body=${encodeURIComponent(message)}`

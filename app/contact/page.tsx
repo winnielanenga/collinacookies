@@ -214,8 +214,10 @@ Please respond to this inquiry!`
                   <CreditCard className="h-7 w-7 flex-none text-gold" />
                   <div>
                     <h3 className="mb-1 font-carte text-xl text-cream">Payment Options</h3>
-                    <p className="text-latte">Cash on delivery, or pay at my booth</p>
-                    <p className="mt-1 text-sm text-latte/70">Find me at the Lake Oswego Farmers&rsquo; Market!</p>
+                    <p className="text-latte">Cash or credit card, in person</p>
+                    <p className="mt-1 text-sm text-latte/70">
+                      Square reader on hand — on delivery or at my market booth
+                    </p>
                   </div>
                 </div>
               </div>

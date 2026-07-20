@@ -26,14 +26,15 @@ export default function PaymentPage() {
             <div className="border border-gold/25 bg-roast p-8">
               <div className="mb-4 flex items-center gap-3">
                 <HandCoins className="h-6 w-6 text-gold" />
-                <h2 className="font-carte text-2xl font-normal text-cream">Cash on Delivery</h2>
+                <h2 className="font-carte text-2xl font-normal text-cream">Pay on Delivery</h2>
               </div>
               <p className="text-latte">
-                The easiest way! Pay with cash when I deliver your bakes. I&rsquo;ll have change if you need it.
+                The easiest way! Pay with cash when I deliver your bakes — I&rsquo;ll have change if you need it. Or
+                tap a credit card on my Square reader right at your door.
               </p>
               <div className="mt-5 border border-gold/20 bg-espresso p-4">
                 <p className="text-sm text-latte">
-                  <strong className="text-cream">Perfect for:</strong> Anyone who prefers cash transactions
+                  <strong className="text-cream">Perfect for:</strong> Anyone who wants to pay when the cookies arrive
                 </p>
               </div>
             </div>
@@ -45,7 +46,7 @@ export default function PaymentPage() {
               </div>
               <p className="text-latte">
                 Visiting my booth at the Lake Oswego Farmers&rsquo; Market? Pay right there when you pick up your
-                treats — no pre-ordering needed!
+                treats — cash or credit card, my Square reader travels with me. No pre-ordering needed!
               </p>
               <div className="mt-5 border border-gold/20 bg-espresso p-4">
                 <p className="text-sm text-latte">
@@ -75,7 +76,8 @@ export default function PaymentPage() {
                 </div>
                 <h3 className="mb-2 font-semibold text-cream">Choose Payment</h3>
                 <p className="text-sm text-latte">
-                  Pay with cash on delivery, or stop by my farmers&rsquo; market booth and pay in person.
+                  Cash or credit card, whichever you like — I take cards in person with my Square reader, on delivery
+                  or at the booth.
                 </p>
               </div>
               <div>
