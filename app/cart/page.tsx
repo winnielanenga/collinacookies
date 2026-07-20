@@ -256,18 +256,10 @@ export default function CartPage() {
                   </div>
 
                   {calculateBundleSavings() > 0 && (
-                    <div className="mt-2 flex justify-between text-sm text-gold">
-                      <span>
-                        Mix &amp; Match Half Dozen ({getHalfDozenBoxes()} box{getHalfDozenBoxes() > 1 ? "es" : ""})
-                      </span>
-                      <span>-${calculateBundleSavings().toFixed(2)}</span>
+                    <div className="mt-2 flex items-baseline justify-between gap-3 text-sm text-gold">
+                      <span>Half Dozen Deal</span>
+                      <span className="whitespace-nowrap">-${calculateBundleSavings().toFixed(2)}</span>
                     </div>
-                  )}
-                  {getTotalItemCount() % 6 !== 0 && getTotalItemCount() > 0 && (
-                    <p className="mt-2 text-xs italic text-latte">
-                      Add {6 - (getTotalItemCount() % 6)} more item{6 - (getTotalItemCount() % 6) > 1 ? "s" : ""} to
-                      unlock {getHalfDozenBoxes() > 0 ? "another" : "a"} $25 half-dozen box!
-                    </p>
                   )}
 
                   {/* Promo Code Section */}
