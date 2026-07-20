@@ -1,4 +1,4 @@
-import { Cookie, Heart, Users, Award } from "lucide-react"
+import { Cookie, Heart } from "lucide-react"
 import Link from "next/link"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
@@ -6,27 +6,17 @@ import Footer from "../components/Footer"
 const chapters = [
   {
     icon: Heart,
-    title: "Where It All Started",
+    title: "How It Started",
     paragraphs: [
-      "My love for baking began in the kitchen with my dad. He's the one who taught me that baking isn't just about following recipes – it's about putting love into every ingredient, every mix, and every batch that comes out of the oven.",
-      "I remember the first time we made chocolate chip cookies together. The smell of vanilla and butter filling our kitchen, the excitement of waiting for that perfect golden-brown color, and most importantly, the joy of sharing something delicious with people we care about.",
+      "I learned to bake from my dad. We started making chocolate chip cookies together on weekends, and I never really stopped. My friends and family got used to being taste testers — some batches were great, some definitely weren't, but I kept going.",
     ],
   },
   {
     icon: Cookie,
-    title: "Learning & Experimenting",
+    title: "Becoming Collina Cookies",
     paragraphs: [
-      "What started as weekend baking sessions with dad quickly became my favorite hobby. I began experimenting with different flavors, trying new techniques, and learning from every batch – even the ones that didn't turn out quite right!",
-      'My friends and family became my taste testers, and their smiles and requests for "just one more cookie" gave me the confidence to keep improving. Each recipe became a little adventure, and I discovered that I had a real passion for creating treats that make people happy.',
-    ],
-  },
-  {
-    icon: Award,
-    title: "Collina Cookies is Born",
-    paragraphs: [
-      "When people started asking if they could order my cookies for their own events and celebrations, I realized this could be more than just a hobby. With my dad's support and encouragement, Collina Cookies was born!",
-      'I chose the name "Collina" because it\'s actually the name of my street! Every time I see the street sign, it reminds me of this sweet journey I\'m on. It felt perfect to name my business after the place where all the magic happens in my kitchen.',
-    "And the journey keeps growing! Collina Cookies now has its very own booth at the Lake Oswego Farmers' Market, where I sell my new line of jumbo, premium bakes — big blueberry muffins, brown butter chocolate chunk cookies, and my famous Salt & Straw snickerdoodles. Come say hi at the market!",
+      "When people started asking to buy my cookies for parties and events, my dad helped me turn it into a real business. I named it Collina after our street, because that's where everything gets baked.",
+      "This summer I got a booth at the Lake Oswego Farmers' Market, where I sell my new jumbo bakes — big blueberry muffins, brown butter chocolate chunk cookies, and my Salt & Straw snickerdoodles. Come say hi!",
     ],
   },
 ]
@@ -42,8 +32,7 @@ export default function StoryPage() {
           <p className="eyebrow mb-5">The Baker</p>
           <h1 className="font-carte text-5xl font-normal text-cream md:text-6xl">My Story</h1>
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-latte">
-            Hi! I&rsquo;m Winnie Lanenga, and I&rsquo;m 14 years old. Welcome to my sweet journey of turning a love for
-            baking into Collina Cookies!
+            Hi! I&rsquo;m Winnie. I&rsquo;m 14, I live in Lake Oswego, and I bake everything you see here.
           </p>
         </div>
       </section>
@@ -69,29 +58,18 @@ export default function StoryPage() {
             </div>
           ))}
 
-          {/* My Mission */}
+          {/* Why I Bake */}
           <div className="gold-frame bg-roast p-10 text-center md:p-12">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border border-gold/35">
-              <Users className="h-7 w-7 text-gold" />
-            </div>
-            <h2 className="font-carte text-3xl font-normal text-cream">My Mission</h2>
+            <h2 className="font-carte text-3xl font-normal text-cream">Why I Bake</h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-latte">
-              Every cookie I bake carries the love and lessons my dad taught me. My goal is simple: to create delicious
-              treats that bring joy to your day and sweetness to your special moments.
-            </p>
-            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-latte">
-              Whether it&rsquo;s a classic chocolate chip cookie that reminds you of childhood or a custom creation for
-              your special event, I put the same care and attention into every single batch. Because at the end of the
-              day, baking is about bringing people together and creating happy memories – one cookie at a time.
+              Baking makes people happy — that&rsquo;s honestly the whole mission. Whether it&rsquo;s a regular order
+              or something custom for a birthday, every batch gets my full attention.
             </p>
           </div>
 
           {/* Call to Action */}
           <div className="pt-6 text-center">
             <h2 className="font-carte text-3xl font-normal text-cream">Ready to Try My Bakes?</h2>
-            <p className="mt-4 text-latte">
-              I&rsquo;d love to share my passion for baking with you! Browse the carte and place an order today.
-            </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
               <Link href="/#menu" className="btn-gold">
                 <Cookie className="h-4 w-4" />
