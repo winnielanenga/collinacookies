@@ -91,6 +91,9 @@ export default function Home() {
               Every bake is one big, jumbo-sized treat — <b className="font-semibold text-gold">$5 apiece</b>,
               whichever you choose.
             </p>
+            <p className="mt-2 text-sm italic text-latte">
+              Single-item orders have a <b className="font-semibold not-italic text-gold">four-bake minimum</b>.
+            </p>
           </div>
 
           <div className="mx-auto flex max-w-2xl flex-col gap-12">

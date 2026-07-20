@@ -31,7 +31,7 @@ export default function AboutPricingPage() {
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-latte">
               Every jumbo, premium bake is $5 — and when you mix and match any six, the half-dozen box is just $25.
-              That&rsquo;s one bake on the house!
+              That&rsquo;s one bake on the house! Single-item orders have a four-bake minimum.
             </p>
             <div className="mx-auto mt-8 grid max-w-2xl gap-8 text-left md:grid-cols-2">
               <div>

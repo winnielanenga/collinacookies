@@ -358,14 +358,25 @@ export default function CartPage() {
                   </div>
 
                   <div className="mt-6 space-y-3">
-                    <button onClick={handleCheckout} className="btn-gold w-full">
+                    <button
+                      onClick={handleCheckout}
+                      disabled={getTotalItemCount() < 4}
+                      className="btn-gold w-full disabled:cursor-not-allowed disabled:opacity-40"
+                    >
                       <ShoppingBag className="h-4 w-4" />
                       Place Order
                     </button>
 
-                    <p className="text-center text-xs text-latte">
-                      Clicking &ldquo;Place Order&rdquo; will open your email to send me your order details!
-                    </p>
+                    {getTotalItemCount() < 4 ? (
+                      <p className="text-center text-xs text-gold">
+                        Orders have a four-bake minimum — add {4 - getTotalItemCount()} more item
+                        {4 - getTotalItemCount() > 1 ? "s" : ""} to place your order.
+                      </p>
+                    ) : (
+                      <p className="text-center text-xs text-latte">
+                        Clicking &ldquo;Place Order&rdquo; will open your email to send me your order details!
+                      </p>
+                    )}
 
                     <Link href="/#menu" className="btn-gold-ghost w-full">
                       Continue Shopping
