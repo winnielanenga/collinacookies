@@ -1,4 +1,4 @@
-import { Cookie, Heart } from "lucide-react"
+import { Cookie, Heart, Users } from "lucide-react"
 import Link from "next/link"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
@@ -8,15 +8,16 @@ const chapters = [
     icon: Heart,
     title: "How It Started",
     paragraphs: [
-      "I learned to bake from my dad. We started making chocolate chip cookies together on weekends, and I never really stopped. My friends and family got used to being taste testers — some batches were great, some definitely weren't, but I kept going.",
+      "I learned to bake from my dad. We started making chocolate chip cookies together on weekends when I was little, and I never really stopped. I still remember standing in front of the oven waiting for that first batch to turn golden — the whole kitchen smelled like butter and vanilla.",
+      "My friends and family got used to being taste testers. Some batches were great, some definitely weren't, but I kept going — trying new flavors, tweaking recipes, and slowly figuring out what actually works.",
     ],
   },
   {
     icon: Cookie,
     title: "Becoming Collina Cookies",
     paragraphs: [
-      "When people started asking to buy my cookies for parties and events, my dad helped me turn it into a real business. I named it Collina after our street, because that's where everything gets baked.",
-      "This summer I got a booth at the Lake Oswego Farmers' Market, where I sell my new jumbo bakes — big blueberry muffins, brown butter chocolate chunk cookies, and my Salt & Straw snickerdoodles. Come say hi!",
+      "When people started asking to buy my cookies for parties and events, my dad helped me turn it into a real business. I named it Collina after our street, because that's where everything gets baked — every single order still comes out of my home kitchen.",
+      "What started as doorstep deliveries around the neighborhood has slowly grown into something bigger. This summer I got a booth at the Lake Oswego Farmers' Market, where I sell my new jumbo bakes — big blueberry muffins, brown butter chocolate chunk cookies, and my Salt & Straw snickerdoodles. Come say hi!",
     ],
   },
 ]
@@ -58,12 +59,21 @@ export default function StoryPage() {
             </div>
           ))}
 
-          {/* Why I Bake */}
+          {/* My Mission */}
           <div className="gold-frame bg-roast p-10 text-center md:p-12">
-            <h2 className="font-carte text-3xl font-normal text-cream">Why I Bake</h2>
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border border-gold/35">
+              <Users className="h-7 w-7 text-gold" />
+            </div>
+            <h2 className="font-carte text-3xl font-normal text-cream">My Mission</h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-latte">
-              Baking makes people happy — that&rsquo;s honestly the whole mission. Whether it&rsquo;s a regular order
-              or something custom for a birthday, every batch gets my full attention.
+              Every cookie I bake carries the love and lessons my dad taught me. My goal is simple: to create
+              delicious treats that bring joy to your day and sweetness to your special moments.
+            </p>
+            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-latte">
+              Whether it&rsquo;s a classic chocolate chip cookie that reminds you of childhood or a custom creation
+              for your special event, I put the same care and attention into every single batch. Because at the end
+              of the day, baking is about bringing people together and creating happy memories – one cookie at a
+              time.
             </p>
           </div>
 
