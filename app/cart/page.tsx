@@ -26,9 +26,8 @@ export default function CartPage() {
 
   // Available promo codes
   const promoCodes = {
-    "1STORDER": { discount: 1, type: "fixed", description: "First Order Discount" },
-    BACKTOSCHOOL: { discount: 10, type: "percent", description: "Back to School Special" },
-    HAPPYHOLIDAYS: { discount: 15, type: "percent", description: "Happy Holidays Discount" },
+    BACK2SCHOOL2026: { discount: 10, type: "percent", description: "Back to School Special" },
+    MARKETEARLYBIRD: { discount: 10, type: "percent", description: "Farmers' Market Early Bird" },
   }
 
   const handleApplyPromo = () => {
@@ -38,7 +37,7 @@ export default function CartPage() {
       setAppliedPromo({ code: upperCode, ...promo })
       setPromoError("")
     } else {
-      setPromoError("Invalid promo code. Try 1STORDER, BACKTOSCHOOL, or HAPPYHOLIDAYS!")
+      setPromoError("Hmm, that code isn't valid — double-check the spelling!")
       setAppliedPromo(null)
     }
   }
