@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Minus, Plus, ShoppingBag, CheckCircle } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Minus, Plus, ShoppingBag, CheckCircle, X, Package } from "lucide-react"
 import { useCart } from "../hooks/useCart"
 
 const BOX_SIZE = 6
@@ -14,13 +14,31 @@ const flavors = [
 
 type FlavorKey = (typeof flavors)[number]["key"]
 
+const emptyBox: Record<FlavorKey, number> = { muffin: 0, chocolate: 0, snickerdoodle: 0 }
+
 export default function HalfDozenBuilder() {
   const { addToCart } = useCart()
-  const [counts, setCounts] = useState<Record<FlavorKey, number>>({ muffin: 0, chocolate: 0, snickerdoodle: 0 })
+  const [isOpen, setIsOpen] = useState(false)
+  const [counts, setCounts] = useState<Record<FlavorKey, number>>(emptyBox)
   const [justAdded, setJustAdded] = useState(false)
 
   const totalPicked = Object.values(counts).reduce((sum, n) => sum + n, 0)
   const boxFull = totalPicked === BOX_SIZE
+
+  useEffect(() => {
+    if (!isOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false)
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [isOpen])
+
+  const openBuilder = () => {
+    setCounts(emptyBox)
+    setJustAdded(false)
+    setIsOpen(true)
+  }
 
   const adjust = (key: FlavorKey, delta: number) => {
     setCounts((prev) => {
@@ -29,7 +47,6 @@ export default function HalfDozenBuilder() {
       if (delta > 0 && totalPicked >= BOX_SIZE) return prev
       return { ...prev, [key]: next }
     })
-    setJustAdded(false)
   }
 
   const handleAddBox = () => {
@@ -52,58 +69,93 @@ export default function HalfDozenBuilder() {
       category: "box",
     })
 
-    setCounts({ muffin: 0, chocolate: 0, snickerdoodle: 0 })
+    setIsOpen(false)
     setJustAdded(true)
   }
 
   return (
-    <div className="mx-auto mt-8 max-w-md text-left">
-      <div className="flex flex-col gap-4">
-        {flavors.map((flavor) => (
-          <div key={flavor.key} className="flex items-center justify-between gap-4">
-            <span className="font-carte text-lg italic text-cream">{flavor.label}</span>
-            <div className="flex flex-none items-center gap-2">
+    <>
+      <button onClick={openBuilder} className="btn-gold mt-8">
+        <Package className="h-4 w-4" />
+        Build Your Box
+      </button>
+      {justAdded && (
+        <p className="mt-4 flex items-center justify-center gap-1.5 text-sm text-gold">
+          <CheckCircle className="h-4 w-4" />
+          Your half dozen is in the cart!
+        </p>
+      )}
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4"
+          onClick={() => setIsOpen(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Build your Mix & Match Half Dozen"
+            className="w-full max-w-md border border-gold/40 bg-roast p-8 text-left shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="eyebrow mb-2 text-[10px]">Mix &amp; Match</p>
+                <h3 className="font-carte text-2xl font-normal text-cream">Build Your Half Dozen</h3>
+                <p className="mt-1 text-sm text-latte">Pick any six bakes — $25 for the box.</p>
+              </div>
               <button
-                onClick={() => adjust(flavor.key, -1)}
-                disabled={counts[flavor.key] === 0}
-                className="btn-gold-sm !px-2.5 disabled:cursor-not-allowed disabled:opacity-40"
-                aria-label={`Remove one ${flavor.label}`}
+                onClick={() => setIsOpen(false)}
+                className="p-1 text-latte transition-colors hover:text-gold"
+                aria-label="Close"
               >
-                <Minus className="h-3.5 w-3.5" />
+                <X className="h-5 w-5" />
               </button>
-              <span className="w-6 text-center font-semibold text-cream">{counts[flavor.key]}</span>
+            </div>
+
+            <div className="mt-7 flex flex-col gap-4">
+              {flavors.map((flavor) => (
+                <div key={flavor.key} className="flex items-center justify-between gap-4">
+                  <span className="font-carte text-lg italic text-cream">{flavor.label}</span>
+                  <div className="flex flex-none items-center gap-2">
+                    <button
+                      onClick={() => adjust(flavor.key, -1)}
+                      disabled={counts[flavor.key] === 0}
+                      className="btn-gold-sm !px-2.5 disabled:cursor-not-allowed disabled:opacity-40"
+                      aria-label={`Remove one ${flavor.label}`}
+                    >
+                      <Minus className="h-3.5 w-3.5" />
+                    </button>
+                    <span className="w-6 text-center font-semibold text-cream">{counts[flavor.key]}</span>
+                    <button
+                      onClick={() => adjust(flavor.key, 1)}
+                      disabled={boxFull}
+                      className="btn-gold-sm !px-2.5 disabled:cursor-not-allowed disabled:opacity-40"
+                      aria-label={`Add one ${flavor.label}`}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-7 border-t border-gold/25 pt-5 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-latte">
+                {boxFull ? "Your box is full — nicely done!" : `${totalPicked} of ${BOX_SIZE} bakes picked`}
+              </p>
               <button
-                onClick={() => adjust(flavor.key, 1)}
-                disabled={boxFull}
-                className="btn-gold-sm !px-2.5 disabled:cursor-not-allowed disabled:opacity-40"
-                aria-label={`Add one ${flavor.label}`}
+                onClick={handleAddBox}
+                disabled={!boxFull}
+                className="btn-gold mt-4 w-full disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <Plus className="h-3.5 w-3.5" />
+                <ShoppingBag className="h-4 w-4" />
+                Add My Box to Cart — $25
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      <div className="mt-6 border-t border-gold/25 pt-5 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-latte">
-          {boxFull ? "Your box is full — nicely done!" : `${totalPicked} of ${BOX_SIZE} bakes picked`}
-        </p>
-        <button
-          onClick={handleAddBox}
-          disabled={!boxFull}
-          className="btn-gold mt-4 w-full disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          <ShoppingBag className="h-4 w-4" />
-          Add My Box to Cart — $25
-        </button>
-        {justAdded && (
-          <p className="mt-3 flex items-center justify-center gap-1.5 text-sm text-gold">
-            <CheckCircle className="h-4 w-4" />
-            Your half dozen is in the cart!
-          </p>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   )
 }

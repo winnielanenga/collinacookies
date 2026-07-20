@@ -110,7 +110,7 @@ export default function Home() {
             <p className="my-2 font-carte text-6xl text-gold">$25</p>
             <p className="mx-auto max-w-md text-latte">
               Any six bakes, in any combination — muffins, chocolate chunk, snickerdoodles. That&rsquo;s $25 instead of
-              $30: one of the six is on the house. Build your box right here:
+              $30: one of the six is on the house.
             </p>
             <HalfDozenBuilder />
           </div>
