@@ -49,14 +49,9 @@ export default function CartPage() {
     setPromoError("")
   }
 
-  // Mix & Match Half Dozen deal: every 6 items rings up as a $25 box instead of $30
-  const getTotalItemCount = () => cartItems.reduce((sum, item) => sum + item.quantity, 0)
-  const getHalfDozenBoxes = () => Math.floor(getTotalItemCount() / 6)
-  const calculateBundleSavings = () => getHalfDozenBoxes() * 5
-
   const calculateDiscount = () => {
     if (!appliedPromo) return 0
-    const subtotal = getCartTotal() - calculateBundleSavings()
+    const subtotal = getCartTotal()
     if (appliedPromo.type === "percent") {
       return (subtotal * appliedPromo.discount) / 100
     } else {
@@ -65,27 +60,31 @@ export default function CartPage() {
   }
 
   const getFinalTotal = () => {
-    return Math.max(0, getCartTotal() - calculateBundleSavings() - calculateDiscount())
+    return Math.max(0, getCartTotal() - calculateDiscount())
   }
+
+  // A Mix & Match box is a complete order on its own; single bakes have a 4-item minimum.
+  const getSingleCount = () =>
+    cartItems.filter((item) => item.category !== "box").reduce((sum, item) => sum + item.quantity, 0)
+  const hasBox = () => cartItems.some((item) => item.category === "box")
+  const meetsMinimum = () => hasBox() || getSingleCount() >= 4
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return
 
     // Create order summary
     const orderSummary = cartItems
-      .map((item) => `${item.quantity} x ${item.name} - $${(item.price * item.quantity).toFixed(2)}`)
+      .map((item) => {
+        const mix = item.category === "box" && item.description ? ` (${item.description})` : ""
+        return `${item.quantity} x ${item.name}${mix} - $${(item.price * item.quantity).toFixed(2)}`
+      })
       .join("\n")
 
     const subtotal = getCartTotal()
-    const bundleSavings = calculateBundleSavings()
     const discount = calculateDiscount()
     const total = getFinalTotal()
 
     let message = `Hi Winnie! I'd like to place an order:\n\n${orderSummary}\n\nSubtotal: $${subtotal.toFixed(2)}`
-
-    if (bundleSavings > 0) {
-      message += `\nMix & Match Half Dozen Deal (${getHalfDozenBoxes()} box${getHalfDozenBoxes() > 1 ? "es" : ""}): -$${bundleSavings.toFixed(2)}`
-    }
 
     if (appliedPromo) {
       message += `\nPromo Code: ${appliedPromo.code} (${appliedPromo.description})\nDiscount: -$${discount.toFixed(2)}`
@@ -192,6 +191,9 @@ export default function CartPage() {
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <h3 className="font-carte text-xl italic text-cream">{item.name}</h3>
+                        {item.category === "box" && item.description && (
+                          <p className="mt-1 text-sm text-latte">{item.description}</p>
+                        )}
                         <p className="mt-1 text-sm text-gold">${item.price.toFixed(2)} each</p>
                       </div>
 
@@ -254,13 +256,6 @@ export default function CartPage() {
                     <span>Subtotal</span>
                     <span>${getCartTotal().toFixed(2)}</span>
                   </div>
-
-                  {calculateBundleSavings() > 0 && (
-                    <div className="mt-2 flex items-baseline justify-between gap-3 text-sm text-gold">
-                      <span>Half Dozen Deal</span>
-                      <span className="whitespace-nowrap">-${calculateBundleSavings().toFixed(2)}</span>
-                    </div>
-                  )}
 
                   {/* Promo Code Section */}
                   <div className="mt-5 space-y-3">
@@ -352,17 +347,17 @@ export default function CartPage() {
                   <div className="mt-6 space-y-3">
                     <button
                       onClick={handleCheckout}
-                      disabled={getTotalItemCount() < 4}
+                      disabled={!meetsMinimum()}
                       className="btn-gold w-full disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <ShoppingBag className="h-4 w-4" />
                       Place Order
                     </button>
 
-                    {getTotalItemCount() < 4 ? (
+                    {!meetsMinimum() ? (
                       <p className="text-center text-xs text-gold">
-                        Orders have a four-bake minimum — add {4 - getTotalItemCount()} more item
-                        {4 - getTotalItemCount() > 1 ? "s" : ""} to place your order.
+                        Single-bake orders have a four-bake minimum — add {4 - getSingleCount()} more bake
+                        {4 - getSingleCount() > 1 ? "s" : ""}, or build a Mix &amp; Match Half Dozen.
                       </p>
                     ) : (
                       <p className="text-center text-xs text-latte">

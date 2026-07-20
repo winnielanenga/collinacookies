@@ -46,7 +46,7 @@ export default function AboutPricingPage() {
                 <h3 className="eyebrow mb-3 text-[10px]">Mix &amp; Match Half Dozen</h3>
                 <ul className="space-y-2 text-latte">
                   <li>· Any 6 bakes, any combination — $25</li>
-                  <li>· Applied automatically in your cart</li>
+                  <li>· Build your box right on the menu page</li>
                 </ul>
               </div>
             </div>

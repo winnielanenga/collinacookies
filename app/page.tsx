@@ -5,6 +5,7 @@ import Image from "next/image"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import CookieCard from "./components/CookieCard"
+import HalfDozenBuilder from "./components/HalfDozenBuilder"
 import ReviewCarousel from "./components/ReviewCarousel"
 
 export default function Home() {
@@ -109,11 +110,9 @@ export default function Home() {
             <p className="my-2 font-carte text-6xl text-gold">$25</p>
             <p className="mx-auto max-w-md text-latte">
               Any six bakes, in any combination — muffins, chocolate chunk, snickerdoodles. That&rsquo;s $25 instead of
-              $30: one of the six is on the house. Applied automatically in your cart.
+              $30: one of the six is on the house. Build your box right here:
             </p>
-            <Link href="/cart" className="btn-gold mt-8">
-              Build Your Box
-            </Link>
+            <HalfDozenBuilder />
           </div>
         </div>
       </section>
