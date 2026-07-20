@@ -162,8 +162,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Customer Reviews */}
+      {/* From My Kitchen */}
       <section className="px-4 py-24 text-center md:py-28">
+        <div className="container mx-auto max-w-3xl">
+          <p className="eyebrow mb-8">From My Kitchen</p>
+          <blockquote className="mx-auto max-w-2xl font-carte text-2xl italic leading-snug text-cream md:text-[34px]">
+            <span className="text-gold">&ldquo;</span>I bake because it makes people happy. That&rsquo;s honestly the
+            entire business plan.<span className="text-gold">&rdquo;</span>
+          </blockquote>
+          <p className="mt-7 text-xs font-semibold uppercase tracking-[0.28em] text-latte">— Winnie</p>
+          <Link href="/story" className="btn-gold-ghost mt-9">
+            Read My Story
+          </Link>
+        </div>
+      </section>
+
+      {/* Customer Reviews */}
+      <section className="bg-roast px-4 py-24 text-center md:py-28">
         <div className="container mx-auto max-w-3xl">
           <p className="eyebrow mb-4">Customer Love</p>
           <h2 className="mb-12 font-carte text-4xl font-normal text-cream md:text-5xl">What People Are Saying</h2>
@@ -177,7 +192,7 @@ export default function Home() {
       </section>
 
       {/* Custom Bakes Section */}
-      <section id="custom" className="bg-roast px-4 py-24 text-center md:py-28">
+      <section id="custom" className="px-4 py-24 text-center md:py-28">
         <div className="container mx-auto max-w-3xl">
           <p className="eyebrow mb-4">Made to Order</p>
           <h2 className="font-carte text-4xl font-normal text-cream md:text-5xl">Custom Bakes</h2>
